@@ -1,0 +1,16 @@
+{
+  "name": "Tempo - Event & Presentation Timer",
+  "short_name": "Tempo",
+  "description": "Professional presentation and event timing system with external display sync",
+  "start_url": "/controller",
+  "display": "standalone",
+  "background_color": "#0A0C10",
+  "theme_color": "#0A0C10",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
