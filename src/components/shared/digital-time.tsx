@@ -18,12 +18,12 @@ export const DigitalTime: React.FC<DigitalTimeProps> = ({
   isFlashing = false,
 }) => {
   const sizeClasses = {
-    sm: 'text-xl font-semibold tracking-tight',
-    md: 'text-3xl font-bold tracking-tight',
-    lg: 'text-5xl font-extrabold tracking-tight',
-    xl: 'text-7xl font-black tracking-tight',
-    '2xl': 'text-8xl sm:text-9xl font-black tracking-tighter',
-    hero: 'text-[12vw] sm:text-[14vw] font-black tracking-tighter leading-none',
+    sm: 'text-lg font-normal tracking-tight',
+    md: 'text-2xl font-normal tracking-tight',
+    lg: 'text-4xl font-normal tracking-tight',
+    xl: 'text-6xl font-light tracking-tight',
+    '2xl': 'text-8xl sm:text-9xl font-light tracking-tighter',
+    hero: 'text-[14vw] sm:text-[16vw] font-light tracking-tighter leading-none',
   };
 
   const getVariantColor = () => {
@@ -32,12 +32,12 @@ export const DigitalTime: React.FC<DigitalTimeProps> = ({
       case 'warning':
         return 'text-amber-400';
       case 'urgent':
-        return 'text-rose-500';
+        return 'text-red-400';
       case 'completed':
-        return 'text-rose-500';
+        return 'text-red-400';
       case 'default':
       default:
-        return 'text-white';
+        return 'text-zinc-100';
     }
   };
 

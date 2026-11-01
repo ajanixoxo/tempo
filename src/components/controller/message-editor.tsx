@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AudienceMessage, MessageVariant } from '@/types/display';
-import { MessageSquare, Send, EyeOff, Eye, Trash2, Check } from 'lucide-react';
+import { EyeOff, Eye, Trash2 } from 'lucide-react';
 
 interface MessageEditorProps {
   message: AudienceMessage | null;
@@ -11,11 +11,10 @@ interface MessageEditorProps {
 
 const PRESET_MESSAGES = [
   'Please return to your seats.',
-  'The next session begins shortly.',
-  'Refreshments will be served after this session.',
-  'Thank you for your participation.',
+  'Next session begins shortly.',
+  'Refreshments will be served outside.',
   'Q&A will begin in 2 minutes.',
-  'Please silence all mobile devices.',
+  'Please silence mobile devices.',
 ];
 
 export const MessageEditor: React.FC<MessageEditorProps> = ({
@@ -34,105 +33,72 @@ export const MessageEditor: React.FC<MessageEditorProps> = ({
 
     onSetMessage(inputText.trim(), variant);
     setJustPublished(true);
-    setTimeout(() => setJustPublished(false), 2000);
-  };
-
-  const selectPreset = (preset: string) => {
-    setInputText(preset);
+    setTimeout(() => setJustPublished(false), 1500);
   };
 
   return (
-    <div className="bg-tempo-card/60 border border-tempo-border/70 rounded-2xl p-4 space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <MessageSquare className="w-4 h-4 text-blue-400" />
-          <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
-            Audience Messages
-          </h3>
-        </div>
+    <div className="space-y-3 pt-4 border-t border-tempo-hairline">
+      <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400">
+        <span className="uppercase tracking-widest">Stage Message</span>
         {message && (
-          <div className="flex items-center gap-2">
-            <span
-              className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
-                message.visible
-                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                  : 'bg-slate-800 text-slate-400'
-              }`}
-            >
-              {message.visible ? 'Visible on Display' : 'Hidden'}
-            </span>
-          </div>
+          <span className={message.visible ? 'text-emerald-400' : 'text-zinc-500'}>
+            {message.visible ? 'Live on Screen' : 'Hidden'}
+          </span>
         )}
       </div>
 
       {/* Preset Chips */}
-      <div>
-        <span className="text-[11px] font-medium text-slate-400 block mb-1.5">Quick Presets:</span>
-        <div className="flex flex-wrap gap-1.5">
-          {PRESET_MESSAGES.map((preset) => (
-            <button
-              key={preset}
-              type="button"
-              onClick={() => selectPreset(preset)}
-              className="px-2 py-1 rounded-md bg-tempo-surface hover:bg-tempo-border/80 border border-tempo-border/50 text-[11px] text-slate-300 hover:text-white transition-colors"
-            >
-              {preset}
-            </button>
-          ))}
-        </div>
+      <div className="flex flex-wrap gap-1">
+        {PRESET_MESSAGES.map((preset) => (
+          <button
+            key={preset}
+            type="button"
+            onClick={() => setInputText(preset)}
+            className="px-2 py-1 rounded bg-tempo-surface hover:bg-tempo-hover text-[11px] text-zinc-400 hover:text-zinc-200 transition-colors"
+          >
+            {preset}
+          </button>
+        ))}
       </div>
 
-      {/* Message Input Form */}
-      <form onSubmit={handlePublish} className="space-y-3">
+      {/* Textarea Form */}
+      <form onSubmit={handlePublish} className="space-y-2">
         <textarea
           rows={2}
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          placeholder="Type message to broadcast to the stage/audience display..."
-          className="w-full bg-tempo-surface border border-tempo-border rounded-xl p-3 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+          placeholder="Message to display on external screen..."
+          className="w-full bg-tempo-surface rounded-lg p-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:bg-tempo-hover transition-colors resize-none"
         />
 
-        <div className="flex items-center justify-between gap-2 pt-1">
-          {/* Variant Selector */}
-          <div className="flex items-center gap-2">
-            <label className="text-[11px] text-slate-400">Position:</label>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 text-xs text-zinc-400">
+            <span className="text-[11px] font-mono">Format:</span>
             <select
               value={variant}
               onChange={(e) => setVariant(e.target.value as MessageVariant)}
-              className="bg-tempo-surface border border-tempo-border rounded-lg px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-blue-500"
+              className="bg-tempo-surface rounded px-2 py-1 text-xs text-zinc-300 focus:outline-none"
             >
-              <option value="banner">Bottom Banner</option>
-              <option value="overlay">Full Overlay</option>
+              <option value="banner">Banner (Bottom)</option>
+              <option value="overlay">Overlay (Center)</option>
             </select>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             {message && (
               <>
                 <button
                   type="button"
                   onClick={onToggleVisibility}
-                  className="px-2.5 py-1.5 rounded-lg bg-tempo-surface hover:bg-tempo-border/80 border border-tempo-border text-xs text-slate-300 hover:text-white flex items-center gap-1.5 transition-colors"
+                  className="px-2.5 py-1 rounded-md bg-tempo-surface hover:bg-tempo-hover text-xs text-zinc-300 hover:text-white transition-colors"
                   title={message.visible ? 'Hide from display' : 'Show on display'}
                 >
-                  {message.visible ? (
-                    <>
-                      <EyeOff className="w-3.5 h-3.5 text-slate-400" />
-                      <span>Hide</span>
-                    </>
-                  ) : (
-                    <>
-                      <Eye className="w-3.5 h-3.5 text-slate-400" />
-                      <span>Show</span>
-                    </>
-                  )}
+                  {message.visible ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                 </button>
-
                 <button
                   type="button"
                   onClick={onClearMessage}
-                  className="p-1.5 rounded-lg bg-tempo-surface hover:bg-rose-500/10 border border-tempo-border text-slate-400 hover:text-rose-400 transition-colors"
+                  className="p-1 rounded-md bg-tempo-surface hover:bg-tempo-hover text-zinc-500 hover:text-red-400 transition-colors"
                   title="Clear message"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
@@ -143,19 +109,9 @@ export const MessageEditor: React.FC<MessageEditorProps> = ({
             <button
               type="submit"
               disabled={!inputText.trim()}
-              className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm"
+              className="px-3.5 py-1 rounded-md bg-zinc-100 hover:bg-white disabled:bg-tempo-surface disabled:text-zinc-600 text-zinc-950 text-xs font-medium transition-colors"
             >
-              {justPublished ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-white" />
-                  <span>Broadcasted!</span>
-                </>
-              ) : (
-                <>
-                  <Send className="w-3.5 h-3.5" />
-                  <span>Publish</span>
-                </>
-              )}
+              {justPublished ? 'Sent' : 'Publish'}
             </button>
           </div>
         </div>

@@ -12,7 +12,7 @@ import {
   loadStoredMessage,
   loadStoredTimers,
 } from '@/lib/storage';
-import { Maximize, Minimize, Tv, Wifi } from 'lucide-react';
+import { Maximize, Minimize } from 'lucide-react';
 
 export const AudienceDisplay: React.FC = () => {
   const [activeTimer, setActiveTimer] = useState<TimerModel | null>(null);
@@ -70,7 +70,6 @@ export const AudienceDisplay: React.FC = () => {
       }
     });
 
-    // Announce connection & request sync from controller
     const displayId = `display-${Date.now()}`;
     broadcastBus.publish({
       type: 'DISPLAY_CONNECTED',
@@ -160,7 +159,6 @@ export const AudienceDisplay: React.FC = () => {
         sign: '' as const,
       };
 
-  // Determine what to display based on mode
   const mode = settings.mode;
   const isClockOnly = mode === 'clock-only';
   const shouldShowClockCorner =
@@ -177,47 +175,34 @@ export const AudienceDisplay: React.FC = () => {
     <div
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      style={{ backgroundColor: settings.appearance.bgColor }}
+      style={{ backgroundColor: settings.appearance.bgColor || '#000000' }}
       className={`relative min-h-screen w-screen flex flex-col justify-between overflow-hidden transition-colors duration-500 ${
         !showControlsOverlay ? 'cursor-none' : ''
       }`}
     >
-      {/* Top Header Bar: Corner Clock & Status */}
+      {/* Top Header Bar */}
       <header className="w-full flex items-center justify-between p-6 sm:p-10 z-20">
         <div className="flex items-center gap-3">
           {shouldShowClockCorner && <ClockDisplay settings={settings.clock} />}
         </div>
 
-        {/* Floating Controls Overlay (Visible on hover/mouse movement) */}
+        {/* Minimal Controls Overlay (Fades out when inactive) */}
         <div
           className={`flex items-center gap-3 transition-opacity duration-300 ${
             showControlsOverlay ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
         >
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/60 border border-slate-700/60 text-xs text-slate-300 backdrop-blur-md">
-            <span
-              className={`w-2 h-2 rounded-full ${
-                isConnected ? 'bg-emerald-400' : 'bg-amber-400 animate-pulse'
-              }`}
-            />
-            <span>{isConnected ? 'Controller Synced' : 'Syncing...'}</span>
-          </div>
-
           <button
             onClick={toggleFullscreen}
-            className="p-2.5 rounded-xl bg-slate-900/70 hover:bg-slate-800 text-white border border-slate-700/60 backdrop-blur-md transition-all shadow-lg hover:scale-105 active:scale-95"
-            title="Toggle Fullscreen (F)"
+            className="p-2 rounded-md bg-zinc-900/60 hover:bg-zinc-850 text-zinc-400 hover:text-white transition-colors"
+            title="Fullscreen (F)"
           >
-            {isFullscreen ? (
-              <Minimize className="w-5 h-5 text-white" />
-            ) : (
-              <Maximize className="w-5 h-5 text-white" />
-            )}
+            {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
           </button>
         </div>
       </header>
 
-      {/* Main Center Content */}
+      {/* Main Content */}
       <main className="my-auto w-full flex flex-col items-center justify-center z-10">
         {isClockOnly ? (
           <ClockDisplay settings={settings.clock} size="hero" />
@@ -231,7 +216,7 @@ export const AudienceDisplay: React.FC = () => {
         )}
       </main>
 
-      {/* Bottom Area: Messages */}
+      {/* Messages */}
       <footer className="w-full z-20">
         {shouldShowMessage && (
           <MessageDisplay message={message} textColor={settings.appearance.messageColor} />

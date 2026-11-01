@@ -10,9 +10,9 @@ const DashboardLayout = dynamic(
     ssr: false,
     loading: () => (
       <div className="min-h-screen bg-tempo-bg flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs text-slate-400 font-mono">Loading Tempo Controller...</span>
+        <div className="flex flex-col items-center gap-2">
+          <div className="w-5 h-5 border border-zinc-500 border-t-transparent rounded-full animate-spin" />
+          <span className="text-xs text-zinc-500 font-mono">Loading controller...</span>
         </div>
       </div>
     ),

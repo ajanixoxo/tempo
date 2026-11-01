@@ -16,10 +16,10 @@ const KEYS = {
 export const DEFAULT_DISPLAY_SETTINGS: DisplaySettings = {
   mode: 'timer-only',
   appearance: {
-    bgColor: '#0A0C10',
-    timerColor: '#FFFFFF',
-    messageColor: '#E2E8F0',
-    accentColor: '#3B82F6',
+    bgColor: '#080809',
+    timerColor: '#F4F4F5',
+    messageColor: '#E4E4E7',
+    accentColor: '#F4F4F5',
     fontSize: 'large',
     fontFamily: 'mono',
   },

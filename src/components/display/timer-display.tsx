@@ -14,7 +14,6 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
   calculated,
   settings,
   title,
-  isCountup = false,
 }) => {
   const { appearance, visibility, warnings } = settings;
 
@@ -37,15 +36,15 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
     (calculated.isCompleted && warnings.flashOnCompletion && !calculated.isNegative);
 
   return (
-    <div className="flex flex-col items-center justify-center text-center w-full max-w-7xl mx-auto px-4 select-none">
+    <div className="flex flex-col items-center justify-center text-center w-full max-w-7xl mx-auto px-6 select-none">
       {/* Session Title (when enabled and mode shows title) */}
       {visibility.showTitle && title && (
-        <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-300 mb-4 sm:mb-8 max-w-4xl truncate px-4">
+        <h2 className="text-xl sm:text-3xl md:text-4xl font-normal tracking-tight text-zinc-400 mb-6 sm:mb-12 max-w-4xl truncate px-4">
           {title}
         </h2>
       )}
 
-      {/* Giant Hero Timer */}
+      {/* Hero Timer */}
       <div className="relative flex items-center justify-center">
         <DigitalTime
           formattedTime={calculated.formattedTime}
@@ -63,42 +62,36 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
         />
       </div>
 
-      {/* Progress Bar (when enabled) */}
+      {/* Minimal Progress Line */}
       {visibility.showProgress && (
-        <div className="w-full max-w-3xl mt-8 sm:mt-12 px-6">
-          <div className="h-3 sm:h-4 w-full bg-slate-800/80 rounded-full overflow-hidden border border-slate-700/60 shadow-inner">
+        <div className="w-full max-w-2xl mt-10 sm:mt-16 px-6">
+          <div className="h-[2px] w-full bg-zinc-900 overflow-hidden">
             <div
               className={`h-full transition-all duration-300 ${
                 calculated.isUrgent
-                  ? 'bg-rose-500'
+                  ? 'bg-red-500'
                   : calculated.isWarning || calculated.isOverTarget
                   ? 'bg-amber-400'
-                  : 'bg-blue-500'
+                  : 'bg-zinc-400'
               }`}
               style={{
                 width: `${Math.min(100, Math.round(calculated.progress * 100))}%`,
-                backgroundColor:
-                  calculated.isUrgent
-                    ? warnings.urgentColor
-                    : calculated.isWarning
-                    ? warnings.warningColor
-                    : appearance.accentColor,
               }}
             />
           </div>
         </div>
       )}
 
-      {/* Overtime or Completed Indicators */}
+      {/* Overtime or Ended Indicators */}
       {calculated.isNegative && (
-        <div className="mt-6 px-4 py-1.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 text-sm sm:text-base font-semibold animate-pulse">
-          OVERTIME
+        <div className="mt-8 text-sm sm:text-base font-mono tracking-widest text-red-400 uppercase">
+          Overtime
         </div>
       )}
 
       {calculated.isCompleted && !calculated.isNegative && (
-        <div className="mt-6 px-4 py-1.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 text-sm sm:text-base font-semibold">
-          TIME UP
+        <div className="mt-8 text-sm sm:text-base font-mono tracking-widest text-zinc-500 uppercase">
+          Time Up
         </div>
       )}
     </div>

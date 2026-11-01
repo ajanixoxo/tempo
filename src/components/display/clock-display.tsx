@@ -29,16 +29,16 @@ export const ClockDisplay: React.FC<ClockDisplayProps> = ({ settings, size = 'no
     return (
       <div className="flex flex-col items-center justify-center text-center p-6 select-none">
         {dateStr && (
-          <div className="text-xl sm:text-2xl font-medium text-slate-400 mb-4 tracking-wide uppercase">
+          <div className="text-lg sm:text-xl font-normal text-zinc-500 mb-4 tracking-widest uppercase font-mono">
             {dateStr}
           </div>
         )}
-        <div className="flex items-baseline justify-center gap-3">
-          <span className="font-mono text-[12vw] sm:text-[14vw] font-black tracking-tighter text-white tabular-nums leading-none">
+        <div className="flex items-baseline justify-center gap-4">
+          <span className="font-mono text-[14vw] sm:text-[16vw] font-light tracking-tighter text-zinc-100 tabular-nums leading-none">
             {time}
           </span>
           {period && (
-            <span className="text-3xl sm:text-5xl font-bold text-slate-400 uppercase font-mono">
+            <span className="text-2xl sm:text-4xl font-normal text-zinc-500 uppercase font-mono">
               {period}
             </span>
           )}
@@ -48,10 +48,10 @@ export const ClockDisplay: React.FC<ClockDisplayProps> = ({ settings, size = 'no
   }
 
   return (
-    <div className="flex items-center gap-2 font-mono text-slate-300 text-sm sm:text-base tabular-nums select-none bg-slate-900/60 px-3.5 py-1.5 rounded-xl border border-slate-700/50 backdrop-blur-md">
-      {dateStr && <span className="text-slate-400 mr-1 hidden sm:inline">{dateStr} •</span>}
-      <span className="font-bold text-white">{time}</span>
-      {period && <span className="text-xs text-slate-400">{period}</span>}
+    <div className="flex items-center gap-2 font-mono text-zinc-400 text-sm tabular-nums select-none bg-zinc-900/40 px-3 py-1 rounded-md">
+      {dateStr && <span className="text-zinc-500 mr-1 hidden sm:inline">{dateStr} •</span>}
+      <span className="text-zinc-200">{time}</span>
+      {period && <span className="text-xs text-zinc-500">{period}</span>}
     </div>
   );
 };

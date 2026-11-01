@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, X } from 'lucide-react';
+import { X } from 'lucide-react';
 
 interface ConfirmationDialogProps {
   isOpen: boolean;
@@ -25,48 +25,35 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="w-full max-w-md rounded-2xl bg-tempo-card border border-tempo-border shadow-2xl p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div
-              className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                variant === 'danger'
-                  ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
-                  : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-              }`}
-            >
-              <AlertTriangle className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="text-base font-semibold text-white">{title}</h3>
-            </div>
-          </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+      <div className="w-full max-w-sm rounded-xl bg-tempo-panel border border-tempo-hairline p-6 shadow-2xl">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-medium text-white">{title}</h3>
           <button
             onClick={onCancel}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-tempo-surface transition-colors"
+            className="text-zinc-500 hover:text-white p-1 rounded transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <p className="text-sm text-slate-300 mb-6 leading-relaxed">{description}</p>
+        <p className="text-xs text-zinc-400 mb-6 leading-relaxed">{description}</p>
 
-        <div className="flex items-center justify-end gap-3">
+        <div className="flex items-center justify-end gap-2">
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-tempo-surface border border-tempo-border transition-colors"
+            className="px-3.5 py-1.5 rounded-lg text-xs text-zinc-400 hover:text-white hover:bg-tempo-surface transition-colors"
           >
             {cancelLabel}
           </button>
           <button
             type="button"
             onClick={onConfirm}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold text-white transition-colors ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium text-white transition-colors ${
               variant === 'danger'
-                ? 'bg-rose-600 hover:bg-rose-500 shadow-lg shadow-rose-600/20'
-                : 'bg-amber-600 hover:bg-amber-500 shadow-lg shadow-amber-600/20'
+                ? 'bg-red-600 hover:bg-red-500'
+                : 'bg-zinc-100 hover:bg-white text-zinc-950 font-semibold'
             }`}
           >
             {confirmLabel}

@@ -2,16 +2,16 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Tempo | Event & Presentation Timer System',
-  description: 'Professional, offline-friendly presentation and event timer with audience display',
+  title: 'Tempo — Event Timer',
+  description: 'Minimalist offline presentation and event timer with external screen sync',
   manifest: '/manifest.json',
   icons: {
-    icon: '/favicon.ico',
+    icon: '/icon.svg',
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0A0C10',
+  themeColor: '#080809',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -24,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="min-h-screen bg-tempo-bg text-slate-100 antialiased selection:bg-blue-600 selection:text-white">
+      <body className="min-h-screen bg-tempo-bg text-zinc-100 antialiased selection:bg-zinc-800 selection:text-white">
         {children}
         <script
           dangerouslySetInnerHTML={{

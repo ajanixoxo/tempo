@@ -1,7 +1,7 @@
 import React from 'react';
 import { TimerModel } from '@/types/timer';
 import { formatSecondsToTime } from '@/lib/time-format';
-import { Copy, Edit3, Trash2, ArrowUpRight, Play, Pause, CheckCircle2 } from 'lucide-react';
+import { Copy, Edit3, Trash2 } from 'lucide-react';
 
 interface TimerCardProps {
   timer: TimerModel;
@@ -24,102 +24,75 @@ export const TimerCard: React.FC<TimerCardProps> = ({
     timer.type === 'countdown'
       ? formatSecondsToTime(timer.initialDuration).formatted
       : timer.targetDuration
-      ? `Target: ${formatSecondsToTime(timer.targetDuration).formatted}`
-      : 'No target';
+      ? `Target ${formatSecondsToTime(timer.targetDuration).formatted}`
+      : 'Count-up';
 
-  const getStatusBadge = () => {
+  const getStatusLabel = () => {
     switch (timer.status) {
       case 'running':
-        return (
-          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Running
-          </span>
-        );
+        return <span className="text-emerald-400 font-mono text-[11px]">running</span>;
       case 'paused':
-        return (
-          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full">
-            <Pause className="w-2.5 h-2.5" />
-            Paused
-          </span>
-        );
+        return <span className="text-amber-400 font-mono text-[11px]">paused</span>;
       case 'completed':
-        return (
-          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-rose-400 bg-rose-500/10 border border-rose-500/20 px-2 py-0.5 rounded-full">
-            <CheckCircle2 className="w-2.5 h-2.5" />
-            Done
-          </span>
-        );
+        return <span className="text-zinc-500 font-mono text-[11px]">ended</span>;
       case 'idle':
       default:
-        return (
-          <span className="text-[11px] font-medium text-slate-400 bg-slate-800/60 border border-slate-700/50 px-2 py-0.5 rounded-full">
-            Idle
-          </span>
-        );
+        return <span className="text-zinc-600 font-mono text-[11px]">ready</span>;
     }
   };
 
   return (
     <div
       onClick={() => onSelect(timer.id)}
-      className={`group relative p-3.5 rounded-xl border transition-all cursor-pointer ${
+      className={`group relative p-3 rounded-lg transition-colors cursor-pointer ${
         isActive
-          ? 'bg-blue-600/10 border-blue-500/50 shadow-lg shadow-blue-500/5'
-          : 'bg-tempo-card hover:bg-tempo-surface border-tempo-border/70 hover:border-tempo-border'
+          ? 'bg-tempo-surface text-white'
+          : 'hover:bg-tempo-hover/60 text-zinc-400 hover:text-zinc-200'
       }`}
     >
-      <div className="flex items-start justify-between gap-2 mb-2">
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <h4
-              className={`text-sm font-semibold truncate ${
-                isActive ? 'text-blue-400' : 'text-slate-200 group-hover:text-white'
-              }`}
-            >
-              {timer.name}
-            </h4>
-          </div>
-          {timer.description && (
-            <p className="text-xs text-slate-400 truncate mt-0.5">{timer.description}</p>
-          )}
-        </div>
-        {getStatusBadge()}
+      <div className="flex items-center justify-between gap-2 mb-1">
+        <h4
+          className={`text-xs font-medium truncate ${
+            isActive ? 'text-white' : 'text-zinc-300 group-hover:text-white'
+          }`}
+        >
+          {timer.name}
+        </h4>
+        {getStatusLabel()}
       </div>
 
-      <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
+      <div className="flex items-center justify-between text-[11px] font-mono text-zinc-500">
         <div className="flex items-center gap-2">
-          <span className="capitalize px-1.5 py-0.5 rounded bg-tempo-surface border border-tempo-border/50 text-[10px] text-slate-300 font-mono">
-            {timer.type}
-          </span>
-          <span className="font-mono text-slate-300">{formattedDuration}</span>
+          <span>{formattedDuration}</span>
+          <span>•</span>
+          <span className="capitalize">{timer.type}</span>
         </div>
 
-        {/* Action icons */}
+        {/* Action icons on hover */}
         <div
           className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
           onClick={(e) => e.stopPropagation()}
         >
           <button
-            title="Edit Timer"
+            title="Edit"
             onClick={() => onEdit(timer)}
-            className="p-1 rounded text-slate-400 hover:text-white hover:bg-tempo-border/50 transition-colors"
+            className="p-1 rounded text-zinc-500 hover:text-zinc-200 hover:bg-tempo-surface transition-colors"
           >
-            <Edit3 className="w-3.5 h-3.5" />
+            <Edit3 className="w-3 h-3" />
           </button>
           <button
-            title="Duplicate Timer"
+            title="Duplicate"
             onClick={() => onDuplicate(timer.id)}
-            className="p-1 rounded text-slate-400 hover:text-white hover:bg-tempo-border/50 transition-colors"
+            className="p-1 rounded text-zinc-500 hover:text-zinc-200 hover:bg-tempo-surface transition-colors"
           >
-            <Copy className="w-3.5 h-3.5" />
+            <Copy className="w-3 h-3" />
           </button>
           <button
-            title="Delete Timer"
+            title="Delete"
             onClick={() => onDelete(timer.id)}
-            className="p-1 rounded text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+            className="p-1 rounded text-zinc-500 hover:text-red-400 hover:bg-tempo-surface transition-colors"
           >
-            <Trash2 className="w-3.5 h-3.5" />
+            <Trash2 className="w-3 h-3" />
           </button>
         </div>
       </div>
