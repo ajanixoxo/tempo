@@ -67,19 +67,27 @@ export const DisplaySettingsPanel: React.FC<DisplaySettingsProps> = ({
         </div>
       )}
 
-      {/* Navigation Tabs */}
-      <div className="flex border-b border-tempo-hairline text-xs font-mono">
-        {(['modes', 'visibility', 'clock', 'alerts', 'appearance'] as const).map((tab) => (
+      {/* Navigation Tabs - Responsive segmented control that never overflows */}
+      <div className="grid grid-cols-5 p-0.5 rounded-lg bg-tempo-surface text-[11px] font-mono text-center select-none">
+        {[
+          { id: 'modes', label: 'Modes', title: 'Display Modes' },
+          { id: 'visibility', label: 'View', title: 'Element Visibility' },
+          { id: 'appearance', label: 'Style', title: 'Typography & Appearance' },
+          { id: 'alerts', label: 'Alerts', title: 'Timing Alerts' },
+          { id: 'clock', label: 'Clock', title: 'Clock Settings' },
+        ].map((tab) => (
           <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-2.5 py-1.5 capitalize transition-colors ${
-              activeTab === tab
-                ? 'text-white border-b border-white -mb-px'
-                : 'text-zinc-500 hover:text-zinc-300'
+            key={tab.id}
+            type="button"
+            title={tab.title}
+            onClick={() => setActiveTab(tab.id as typeof activeTab)}
+            className={`py-1.5 px-0.5 rounded-md transition-colors truncate text-center ${
+              activeTab === tab.id
+                ? 'bg-zinc-200 text-zinc-950 font-medium shadow-sm'
+                : 'text-zinc-400 hover:text-white hover:bg-tempo-hover/60'
             }`}
           >
-            {tab}
+            {tab.label}
           </button>
         ))}
       </div>

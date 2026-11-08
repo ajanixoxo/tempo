@@ -236,7 +236,7 @@ export const DashboardLayout: React.FC = () => {
         </div>
 
         {/* Right Sidebar: Display Settings & Messages */}
-        <div className="w-72 lg:w-80 bg-tempo-panel border-l border-tempo-hairline flex flex-col h-full overflow-y-auto p-4 space-y-4 flex-shrink-0">
+        <div className="w-80 xl:w-88 bg-tempo-panel border-l border-tempo-hairline flex flex-col h-full overflow-y-auto overflow-x-hidden p-4 space-y-4 flex-shrink-0">
           <DisplaySettingsPanel
             settings={settings}
             onUpdateSettings={updateSettings}
