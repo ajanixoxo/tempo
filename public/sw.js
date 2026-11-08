@@ -1,13 +1,32 @@
 const CACHE_NAME = 'tempo-v1';
 const PRECACHE_URLS = ['/', '/controller', '/display', '/manifest.json', '/icon.svg'];
 
+const isLocalhost = Boolean(
+  self.location.hostname === 'localhost' ||
+    self.location.hostname === '[::1]' ||
+    self.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)
+);
+
 self.addEventListener('install', (event) => {
+  if (isLocalhost) {
+    self.skipWaiting();
+    return;
+  }
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS)).then(() => self.skipWaiting())
   );
 });
 
 self.addEventListener('activate', (event) => {
+  if (isLocalhost) {
+    event.waitUntil(
+      caches.keys().then((keys) => Promise.all(keys.map((k) => caches.delete(k)))).then(() => {
+        self.registration.unregister();
+        return self.clients.claim();
+      })
+    );
+    return;
+  }
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
@@ -22,7 +41,8 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
+  // Never intercept or cache requests in local development (prevents stale dev chunks 404)
+  if (isLocalhost || event.request.method !== 'GET') return;
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {

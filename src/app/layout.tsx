@@ -31,12 +31,36 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+              if (
+                typeof window !== 'undefined' &&
+                'serviceWorker' in navigator &&
+                window.location.hostname !== 'localhost' &&
+                window.location.hostname !== '127.0.0.1' &&
+                window.location.protocol.startsWith('http')
+              ) {
                 window.addEventListener('load', () => {
                   navigator.serviceWorker.register('/sw.js').catch((err) => {
                     console.log('SW registration skipped:', err);
                   });
                 });
+              } else if (
+                typeof window !== 'undefined' &&
+                'serviceWorker' in navigator &&
+                (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+              ) {
+                // Clear any service workers and caches on localhost to ensure clean dev server rendering
+                navigator.serviceWorker.getRegistrations().then((registrations) => {
+                  for (const registration of registrations) {
+                    registration.unregister();
+                  }
+                });
+                if ('caches' in window) {
+                  caches.keys().then((names) => {
+                    for (const name of names) {
+                      caches.delete(name);
+                    }
+                  });
+                }
               }
             `,
           }}
