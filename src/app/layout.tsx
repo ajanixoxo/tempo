@@ -6,7 +6,9 @@ export const metadata: Metadata = {
   description: 'Minimalist offline presentation and event timer with external screen sync',
   manifest: '/manifest.json',
   icons: {
-    icon: '/icon.svg',
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/icon.svg',
   },
 };
 
