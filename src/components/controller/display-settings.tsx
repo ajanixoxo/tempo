@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DisplayMode, DisplaySettings } from '@/types/display';
+import { DisplayFontFamily, DisplayFontWeight, DisplayMode, DisplaySettings } from '@/types/display';
 import { ExternalLink, HelpCircle } from 'lucide-react';
 
 interface DisplaySettingsProps {
@@ -111,7 +111,7 @@ export const DisplaySettingsPanel: React.FC<DisplaySettingsProps> = ({
             { key: 'showTitle', label: 'Session Title' },
             { key: 'showClock', label: 'Corner Real-World Clock' },
             { key: 'showMessage', label: 'Stage Announcements' },
-            { key: 'showProgress', label: 'Progress Line' },
+            { key: 'showProgress', label: 'Bottom Progress Bar' },
             { key: 'showStatus', label: 'Status Indicator' },
           ].map((item) => (
             <label
@@ -346,26 +346,65 @@ export const DisplaySettingsPanel: React.FC<DisplaySettingsProps> = ({
             </p>
           </div>
 
-          <div className="pt-2 border-t border-tempo-hairline">
-            <span className="text-[11px] text-zinc-400 font-mono uppercase tracking-wider block mb-1.5">
-              Typography
-            </span>
-            <select
-              value={settings.appearance.fontFamily}
-              onChange={(e) =>
-                onUpdateSettings({
-                  appearance: {
-                    ...settings.appearance,
-                    fontFamily: e.target.value as 'mono' | 'sans' | 'serif',
-                  },
-                })
-              }
-              className="w-full bg-tempo-surface rounded px-2.5 py-1.5 text-xs text-white focus:outline-none"
-            >
-              <option value="mono">Monospace (Instrumental)</option>
-              <option value="sans">Sans-serif (Modern)</option>
-              <option value="serif">Serif (Classic)</option>
-            </select>
+          <div className="pt-2 border-t border-tempo-hairline space-y-3">
+            <div>
+              <span className="text-[11px] text-zinc-400 font-mono uppercase tracking-wider block mb-1.5">
+                Font Family
+              </span>
+              <select
+                value={settings.appearance.fontFamily}
+                onChange={(e) =>
+                  onUpdateSettings({
+                    appearance: {
+                      ...settings.appearance,
+                      fontFamily: e.target.value as DisplayFontFamily,
+                    },
+                  })
+                }
+                className="w-full bg-tempo-surface rounded px-2.5 py-1.5 text-xs text-white focus:outline-none"
+              >
+                <option value="mono">Monospace (Heavy Tabular)</option>
+                <option value="sans">Sans-serif (Modern Punchy)</option>
+                <option value="condensed">Condensed (Ultra Tall / DIN)</option>
+                <option value="impact">Impact (Massive Block)</option>
+                <option value="serif">Serif (Classic Bold)</option>
+              </select>
+            </div>
+
+            <div>
+              <span className="text-[11px] text-zinc-400 font-mono uppercase tracking-wider block mb-1.5">
+                Font Thickness / Weight
+              </span>
+              <div className="grid grid-cols-3 gap-1.5">
+                {[
+                  { label: 'Normal', value: 'normal' as DisplayFontWeight },
+                  { label: 'Semibold', value: 'semibold' as DisplayFontWeight },
+                  { label: 'Bold (700)', value: 'bold' as DisplayFontWeight },
+                  { label: 'Extra Bold', value: 'extrabold' as DisplayFontWeight },
+                  { label: 'Black (900)', value: 'black' as DisplayFontWeight },
+                ].map((w) => (
+                  <button
+                    key={w.value}
+                    type="button"
+                    onClick={() =>
+                      onUpdateSettings({
+                        appearance: {
+                          ...settings.appearance,
+                          fontWeight: w.value,
+                        },
+                      })
+                    }
+                    className={`px-2 py-1.5 rounded text-[11px] font-mono transition-colors text-center ${
+                      (settings.appearance.fontWeight || 'bold') === w.value
+                        ? 'bg-zinc-100 text-zinc-950 font-bold'
+                        : 'bg-tempo-surface hover:bg-tempo-hover text-zinc-400 hover:text-white'
+                    }`}
+                  >
+                    {w.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       )}

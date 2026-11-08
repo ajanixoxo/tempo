@@ -127,18 +127,22 @@ describe('Persistence: LocalStorage Module', () => {
     expect(loaded.appearance.bgColor).toBe('#111827');
   });
 
-  it('persists and loads custom stage timerScale font sizes', () => {
+  it('persists and loads custom stage timerScale font sizes and bold weights', () => {
     const scaledSettings: DisplaySettings = {
       ...DEFAULT_DISPLAY_SETTINGS,
       appearance: {
         ...DEFAULT_DISPLAY_SETTINGS.appearance,
         timerScale: 250, // 250% scale
+        fontFamily: 'impact',
+        fontWeight: 'black',
       },
     };
 
     saveStoredDisplaySettings(scaledSettings);
     const loaded = loadStoredDisplaySettings();
     expect(loaded.appearance.timerScale).toBe(250);
+    expect(loaded.appearance.fontFamily).toBe('impact');
+    expect(loaded.appearance.fontWeight).toBe('black');
   });
 
   it('saves and loads audience messages faithfully', () => {

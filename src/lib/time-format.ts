@@ -28,7 +28,8 @@ export function formatSecondsToTime(
   const pad = (num: number): string => num.toString().padStart(2, '0');
 
   const sign: '' | '-' | '+' = isNegative ? overtimeSign : '';
-  const hasHours = hours > 0 || forceHours;
+  // When in overtime, format as +MM:SS (e.g. +00:20) unless overtime itself exceeds an hour
+  const hasHours = hours > 0 || (!isNegative && forceHours);
 
   const formatted = hasHours
     ? `${sign}${pad(hours)}:${pad(minutes)}:${pad(seconds)}`

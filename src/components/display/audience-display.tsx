@@ -262,7 +262,13 @@ export const AudienceDisplay: React.FC = () => {
       {/* Main Content */}
       <main className="my-auto w-full flex flex-col items-center justify-center z-10 overflow-hidden">
         {isClockOnly ? (
-          <ClockDisplay settings={settings.clock} size="hero" scale={currentScale} />
+          <ClockDisplay
+            settings={settings.clock}
+            size="hero"
+            scale={currentScale}
+            fontFamily={settings.appearance.fontFamily}
+            fontWeight={settings.appearance.fontWeight || 'bold'}
+          />
         ) : (
           <TimerDisplay
             calculated={calculated}
@@ -274,11 +280,31 @@ export const AudienceDisplay: React.FC = () => {
       </main>
 
       {/* Messages */}
-      <footer className="w-full z-20">
+      <footer className="w-full z-20 pb-6 sm:pb-8">
         {shouldShowMessage && (
           <MessageDisplay message={message} textColor={settings.appearance.messageColor} />
         )}
       </footer>
+
+      {/* Bottom Progress Bar - Docked at the bottom of the screen with prominent height */}
+      {settings.visibility.showProgress && !isClockOnly && activeTimer && (
+        <div className="w-full h-4 sm:h-5 bg-zinc-900/90 overflow-hidden z-30 fixed bottom-0 left-0 right-0">
+          <div
+            className={`h-full transition-all duration-300 ease-out ${
+              calculated.isUrgent
+                ? 'bg-red-500'
+                : calculated.isWarning || calculated.isOverTarget
+                ? 'bg-amber-400'
+                : 'bg-zinc-200'
+            } ${calculated.isNegative ? 'bg-red-500 animate-pulse' : ''}`}
+            style={{
+              width: calculated.isNegative
+                ? '100%'
+                : `${Math.min(100, Math.max(0, Math.round(calculated.progress * 100)))}%`,
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { ClockSettings } from '@/types/display';
+import { ClockSettings, DisplayFontFamily, DisplayFontWeight } from '@/types/display';
 import { formatRealWorldClock } from '@/lib/time-format';
 
 interface ClockDisplayProps {
   settings: ClockSettings;
   size?: 'normal' | 'hero';
   scale?: number;
+  fontFamily?: DisplayFontFamily;
+  fontWeight?: DisplayFontWeight;
 }
 
-export const ClockDisplay: React.FC<ClockDisplayProps> = ({ settings, size = 'normal', scale = 100 }) => {
+export const ClockDisplay: React.FC<ClockDisplayProps> = ({
+  settings,
+  size = 'normal',
+  scale = 100,
+  fontFamily = 'mono',
+  fontWeight = 'bold',
+}) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
   useEffect(() => {
@@ -25,6 +33,38 @@ export const ClockDisplay: React.FC<ClockDisplayProps> = ({ settings, size = 'no
     settings.showSeconds,
     settings.showDate
   );
+
+  const getFontFamilyClass = () => {
+    switch (fontFamily) {
+      case 'condensed':
+        return 'font-condensed';
+      case 'impact':
+        return 'font-impact';
+      case 'sans':
+        return 'font-sans';
+      case 'serif':
+        return 'font-serif';
+      case 'mono':
+      default:
+        return 'font-mono';
+    }
+  };
+
+  const getWeightClass = () => {
+    switch (fontWeight) {
+      case 'normal':
+        return 'font-normal';
+      case 'semibold':
+        return 'font-semibold';
+      case 'extrabold':
+        return 'font-extrabold';
+      case 'black':
+        return 'font-black';
+      case 'bold':
+      default:
+        return 'font-bold';
+    }
+  };
 
   if (size === 'hero') {
     const multiplier = Math.max(0.3, scale / 100);
@@ -45,7 +85,7 @@ export const ClockDisplay: React.FC<ClockDisplayProps> = ({ settings, size = 'no
         <div className="flex items-baseline justify-center gap-4 overflow-hidden w-full">
           <span
             style={heroStyle}
-            className="font-mono font-light tracking-tighter text-zinc-100 tabular-nums inline-block"
+            className={`${getFontFamilyClass()} ${getWeightClass()} tracking-tight text-zinc-100 tabular-nums inline-block`}
           >
             {time}
           </span>

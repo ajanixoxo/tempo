@@ -1,5 +1,7 @@
 import React from 'react';
 
+export type FontWeightOption = 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold' | 'black';
+
 interface DigitalTimeProps {
   formattedTime: string;
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'hero';
@@ -9,6 +11,7 @@ interface DigitalTimeProps {
   isFlashing?: boolean;
   scale?: number; // e.g. 100 for 100%, 150 for 150%, 200 for 200%, up to any size
   customFontSize?: string;
+  weight?: FontWeightOption;
 }
 
 export const DigitalTime: React.FC<DigitalTimeProps> = ({
@@ -20,14 +23,24 @@ export const DigitalTime: React.FC<DigitalTimeProps> = ({
   isFlashing = false,
   scale = 100,
   customFontSize,
+  weight = 'bold',
 }) => {
   const sizeClasses = {
-    sm: 'text-lg font-normal tracking-tight',
-    md: 'text-2xl font-normal tracking-tight',
-    lg: 'text-4xl font-normal tracking-tight',
-    xl: 'text-6xl font-light tracking-tight',
-    '2xl': 'text-8xl sm:text-9xl font-light tracking-tighter',
-    hero: 'font-light tracking-tighter leading-none whitespace-nowrap',
+    sm: 'text-lg tracking-tight',
+    md: 'text-2xl tracking-tight',
+    lg: 'text-4xl tracking-tight',
+    xl: 'text-6xl tracking-tight',
+    '2xl': 'text-8xl sm:text-9xl tracking-tight',
+    hero: 'tracking-tight leading-none whitespace-nowrap',
+  };
+
+  const weightClasses: Record<FontWeightOption, string> = {
+    normal: 'font-normal',
+    medium: 'font-medium',
+    semibold: 'font-semibold',
+    bold: 'font-bold',
+    extrabold: 'font-extrabold',
+    black: 'font-black',
   };
 
   const getVariantColor = () => {
@@ -65,10 +78,18 @@ export const DigitalTime: React.FC<DigitalTimeProps> = ({
     computedStyle.whiteSpace = 'nowrap';
   }
 
+  const hasCustomFontFamily =
+    className.includes('font-sans') ||
+    className.includes('font-serif') ||
+    className.includes('font-condensed') ||
+    className.includes('font-impact');
+
   return (
     <span
       style={computedStyle}
-      className={`font-mono tabular-nums select-none inline-block ${
+      className={`${hasCustomFontFamily ? '' : 'font-mono'} ${
+        weightClasses[weight]
+      } tabular-nums select-none inline-block ${
         sizeClasses[size]
       } ${getVariantColor()} ${isFlashing ? 'animate-urgent-flash' : ''} ${className}`}
     >

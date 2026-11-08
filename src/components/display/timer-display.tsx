@@ -37,6 +37,22 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 
   const timerScale = appearance.timerScale ?? 100;
 
+  const getFontFamilyClass = () => {
+    switch (appearance.fontFamily) {
+      case 'condensed':
+        return 'font-condensed';
+      case 'impact':
+        return 'font-impact';
+      case 'sans':
+        return 'font-sans';
+      case 'serif':
+        return 'font-serif';
+      case 'mono':
+      default:
+        return 'font-mono';
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center text-center w-full max-w-none px-4 sm:px-8 select-none">
       {/* Session Title (when enabled and mode shows title) */}
@@ -46,44 +62,19 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
         </h2>
       )}
 
-      {/* Hero Timer with Custom Scale */}
+      {/* Hero Timer with Custom Scale & Bold Weight */}
       <div className="relative flex items-center justify-center w-full overflow-hidden">
         <DigitalTime
           formattedTime={calculated.formattedTime}
           size="hero"
           scale={timerScale}
+          weight={appearance.fontWeight || 'bold'}
           variant={getTimerVariant()}
           customColor={getCustomColor()}
           isFlashing={isFlashing}
-          className={`${
-            appearance.fontFamily === 'mono'
-              ? 'font-mono'
-              : appearance.fontFamily === 'serif'
-              ? 'font-serif'
-              : 'font-sans'
-          }`}
+          className={getFontFamilyClass()}
         />
       </div>
-
-      {/* Minimal Progress Line */}
-      {visibility.showProgress && (
-        <div className="w-full max-w-2xl mt-8 sm:mt-12 px-6">
-          <div className="h-[2px] w-full bg-zinc-900 overflow-hidden">
-            <div
-              className={`h-full transition-all duration-300 ${
-                calculated.isUrgent
-                  ? 'bg-red-500'
-                  : calculated.isWarning || calculated.isOverTarget
-                  ? 'bg-amber-400'
-                  : 'bg-zinc-400'
-              }`}
-              style={{
-                width: `${Math.min(100, Math.round(calculated.progress * 100))}%`,
-              }}
-            />
-          </div>
-        </div>
-      )}
 
       {/* Overtime or Ended Indicators */}
       {calculated.isNegative && (

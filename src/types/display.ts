@@ -7,7 +7,8 @@ export type DisplayMode =
   | 'custom';
 
 export type DisplayFontSize = 'normal' | 'large' | 'huge';
-export type DisplayFontFamily = 'mono' | 'sans' | 'serif';
+export type DisplayFontFamily = 'mono' | 'sans' | 'condensed' | 'impact' | 'serif';
+export type DisplayFontWeight = 'normal' | 'semibold' | 'bold' | 'extrabold' | 'black';
 export type ClockFormat = '12h' | '24h';
 export type MessageVariant = 'banner' | 'overlay';
 
@@ -43,6 +44,7 @@ export interface DisplayAppearanceSettings {
   accentColor: string;
   fontSize: DisplayFontSize;
   fontFamily: DisplayFontFamily;
+  fontWeight: DisplayFontWeight;
   timerScale: number; // Scale percentage for stage display font (default 100%, can be set to any size e.g. 50% to 400%)
 }
 

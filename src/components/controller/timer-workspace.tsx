@@ -107,24 +107,33 @@ export const TimerWorkspace: React.FC<TimerWorkspaceProps> = ({
           <DigitalTime
             formattedTime={calculated.formattedTime}
             size="2xl"
+            weight="bold"
             variant={getVisualVariant()}
             isFlashing={calculated.isUrgent && warnings.flashOnUrgent}
           />
         </div>
 
-        {/* Minimal Thin Progress Line */}
+        {/* Progress Bar with Prominent Height */}
         {(timer.type === 'countdown' || (timer.type === 'countup' && timer.targetDuration)) && (
-          <div className="w-full max-w-md mt-6">
-            <div className="h-[2px] w-full bg-tempo-surface overflow-hidden">
+          <div className="w-full max-w-lg mt-8 px-2">
+            <div className="flex items-center justify-between text-[11px] font-mono text-zinc-500 mb-1.5">
+              <span>Progress</span>
+              <span>{Math.min(100, Math.max(0, Math.round(calculated.progress * 100)))}%</span>
+            </div>
+            <div className="h-3 w-full bg-tempo-surface rounded-full overflow-hidden">
               <div
-                className={`h-full transition-all duration-300 ${
+                className={`h-full transition-all duration-300 ease-out ${
                   calculated.isUrgent
                     ? 'bg-red-500'
                     : calculated.isWarning || calculated.isOverTarget
                     ? 'bg-amber-400'
-                    : 'bg-zinc-400'
-                }`}
-                style={{ width: `${Math.min(100, Math.round(calculated.progress * 100))}%` }}
+                    : 'bg-zinc-200'
+                } ${calculated.isNegative ? 'bg-red-500 animate-pulse' : ''}`}
+                style={{
+                  width: calculated.isNegative
+                    ? '100%'
+                    : `${Math.min(100, Math.max(0, Math.round(calculated.progress * 100)))}%`,
+                }}
               />
             </div>
           </div>

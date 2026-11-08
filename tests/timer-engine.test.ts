@@ -188,6 +188,13 @@ describe('Timer Engine: Zero Handling & Negative Overtime', () => {
     expect(state.currentSeconds).toBe(-5);
     expect(state.overtimeSeconds).toBe(5);
     expect(state.formattedTime).toBe('+00:05');
+
+    // After 30 seconds (20 seconds overdue) - formats as +00:20
+    const state20 = calculateTimerState(timer, t0 + 30000);
+    expect(state20.isNegative).toBe(true);
+    expect(state20.currentSeconds).toBe(-20);
+    expect(state20.overtimeSeconds).toBe(20);
+    expect(state20.formattedTime).toBe('+00:20');
   });
 });
 

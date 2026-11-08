@@ -22,6 +22,7 @@ export const DEFAULT_DISPLAY_SETTINGS: DisplaySettings = {
     accentColor: '#F4F4F5',
     fontSize: 'large',
     fontFamily: 'mono',
+    fontWeight: 'bold',
     timerScale: 100,
   },
   visibility: {
@@ -181,6 +182,7 @@ export function loadStoredDisplaySettings(): DisplaySettings {
       appearance: {
         ...DEFAULT_DISPLAY_SETTINGS.appearance,
         ...(parsed.appearance || {}),
+        fontWeight: parsed.appearance?.fontWeight || 'bold',
         timerScale:
           typeof parsed.appearance?.timerScale === 'number' && parsed.appearance.timerScale > 0
             ? parsed.appearance.timerScale
