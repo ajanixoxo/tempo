@@ -18,6 +18,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
   const { appearance, visibility, warnings } = settings;
 
   const getTimerVariant = () => {
+    if (calculated.isNegative) return 'urgent';
     if (calculated.isCompleted && !calculated.isNegative) return 'completed';
     if (calculated.isUrgent) return 'urgent';
     if (calculated.isWarning || calculated.isOverTarget) return 'warning';
@@ -25,6 +26,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
   };
 
   const getCustomColor = () => {
+    if (calculated.isNegative) return warnings.urgentColor || '#EF4444';
     if (calculated.isCompleted && !calculated.isNegative) return warnings.completionColor;
     if (calculated.isUrgent) return warnings.urgentColor;
     if (calculated.isWarning || calculated.isOverTarget) return warnings.warningColor;

@@ -196,6 +196,40 @@ describe('Timer Engine: Zero Handling & Negative Overtime', () => {
     expect(state20.overtimeSeconds).toBe(20);
     expect(state20.formattedTime).toBe('+00:20');
   });
+
+  it('keeps running past zero without stopping when allowNegative is true', () => {
+    const t0 = 10000;
+    let timer = createMockCountdown({ initialDuration: 10, allowNegative: true });
+    timer = startTimer(timer, t0);
+
+    // Reaching zero at t0 + 10000
+    timer = checkTimerCompletion(timer, t0 + 10000);
+    expect(timer.status).toBe('running');
+    expect(timer.startedAt).toBe(t0);
+
+    // Continuing into overtime at t0 + 30000 (20s overtime)
+    timer = checkTimerCompletion(timer, t0 + 30000);
+    expect(timer.status).toBe('running');
+    const state = calculateTimerState(timer, t0 + 30000);
+    expect(state.isNegative).toBe(true);
+    expect(state.formattedTime).toBe('+00:20');
+  });
+
+  it('does not stop running when negative time adjustment exceeds remaining time', () => {
+    const t0 = 10000;
+    let timer = createMockCountdown({ initialDuration: 120, allowNegative: true });
+    timer = startTimer(timer, t0);
+
+    // Subtract 180 seconds while 100 seconds remain (forces into 80s overtime)
+    timer = adjustTimerTime(timer, -180, t0 + 20000);
+    expect(timer.status).toBe('running');
+    expect(timer.timeAdjustment).toBe(-180);
+
+    const state = calculateTimerState(timer, t0 + 20000);
+    expect(state.isNegative).toBe(true);
+    expect(state.currentSeconds).toBe(-80);
+    expect(state.formattedTime).toBe('+01:20');
+  });
 });
 
 describe('Timer Engine: Count-up Timer', () => {

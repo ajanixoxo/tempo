@@ -53,6 +53,7 @@ export const TimerWorkspace: React.FC<TimerWorkspaceProps> = ({
   const calculated = calculateTimerState(timer, renderTime, warnings);
 
   const getVisualVariant = () => {
+    if (calculated.isNegative) return 'urgent';
     if (calculated.isCompleted && !calculated.isNegative) return 'completed';
     if (calculated.isUrgent) return 'urgent';
     if (calculated.isWarning || calculated.isOverTarget) return 'warning';
@@ -64,11 +65,11 @@ export const TimerWorkspace: React.FC<TimerWorkspaceProps> = ({
       return (
         <span className="text-red-400 font-mono text-xs flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
-          Overtime ({calculated.formattedTime})
+          {timer.status === 'running' ? 'Overtime' : 'Overtime (Paused)'} ({calculated.formattedTime})
         </span>
       );
     }
-    if (calculated.isCompleted && !timer.allowNegative) {
+    if (calculated.isCompleted && timer.allowNegative === false) {
       return <span className="text-zinc-500 font-mono text-xs">Ended</span>;
     }
     if (timer.status === 'running') {
@@ -146,7 +147,7 @@ export const TimerWorkspace: React.FC<TimerWorkspaceProps> = ({
             status={timer.status}
             canStart={
               timer.type === 'countdown'
-                ? calculated.currentSeconds > 0 || timer.allowNegative
+                ? timer.allowNegative !== false || calculated.currentSeconds > 0
                 : true
             }
             onStart={onStart}

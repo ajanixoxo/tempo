@@ -33,7 +33,7 @@ export const TimerCard: React.FC<TimerCardProps> = ({
       (timer.status === 'running' && timer.startedAt ? (Date.now() - timer.startedAt) / 1000 : 0);
     const isOvertime =
       timer.type === 'countdown' &&
-      timer.allowNegative &&
+      timer.allowNegative !== false &&
       timer.initialDuration + timer.timeAdjustment - currentElapsed < 0;
 
     if (isOvertime) {

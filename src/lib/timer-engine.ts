@@ -49,7 +49,7 @@ function calculateCountdownState(
   let overtimeSeconds = 0;
 
   if (rawRemaining <= 0) {
-    if (timer.allowNegative) {
+    if (timer.allowNegative !== false) {
       currentSeconds = Math.floor(rawRemaining);
       isNegative = true;
       isCompleted = true;
@@ -154,8 +154,8 @@ function calculateCountupState(
 export function startTimer(timer: TimerModel, now: number = Date.now()): TimerModel {
   if (timer.status === 'running') return timer;
 
-  // If completed and not allowing negative on countdown, cannot start unless time is added or reset
-  if (timer.status === 'completed' && timer.type === 'countdown' && !timer.allowNegative) {
+  // If completed and explicitly disallowing negative on countdown, cannot start unless time is added or reset
+  if (timer.status === 'completed' && timer.type === 'countdown' && timer.allowNegative === false) {
     const effectiveRemaining = timer.initialDuration + timer.timeAdjustment - timer.accumulatedElapsed;
     if (effectiveRemaining <= 0) {
       return timer;
@@ -204,8 +204,8 @@ export function adjustTimerTime(
 ): TimerModel {
   const newAdjustment = timer.timeAdjustment + deltaSeconds;
 
-  // Check if countdown without negative allowed reaches or goes below 0
-  if (timer.type === 'countdown' && !timer.allowNegative) {
+  // Check if countdown with negative explicitly disallowed reaches or goes below 0
+  if (timer.type === 'countdown' && timer.allowNegative === false) {
     const currentElapsed =
       timer.accumulatedElapsed +
       (timer.status === 'running' && timer.startedAt ? Math.max(0, (now - timer.startedAt) / 1000) : 0);
@@ -259,7 +259,7 @@ export function checkTimerCompletion(timer: TimerModel, now: number = Date.now()
       (timer.startedAt ? Math.max(0, (now - timer.startedAt) / 1000) : 0);
     const remaining = timer.initialDuration + timer.timeAdjustment - currentElapsed;
 
-    if (remaining <= 0 && !timer.allowNegative) {
+    if (remaining <= 0 && timer.allowNegative === false) {
       return {
         ...timer,
         status: 'completed',

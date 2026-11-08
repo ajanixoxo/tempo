@@ -21,7 +21,7 @@ export const TimerEditDialog: React.FC<TimerEditDialogProps> = ({
   const [hours, setHours] = useState('0');
   const [minutes, setMinutes] = useState('0');
   const [seconds, setSeconds] = useState('0');
-  const [allowNegative, setAllowNegative] = useState(false);
+  const [allowNegative, setAllowNegative] = useState(true);
 
   const [targetHours, setTargetHours] = useState('0');
   const [targetMinutes, setTargetMinutes] = useState('0');
@@ -37,7 +37,7 @@ export const TimerEditDialog: React.FC<TimerEditDialogProps> = ({
       setHours(Math.floor(timer.initialDuration / 3600).toString());
       setMinutes(Math.floor((timer.initialDuration % 3600) / 60).toString());
       setSeconds((timer.initialDuration % 60).toString());
-      setAllowNegative(timer.allowNegative);
+      setAllowNegative(timer.allowNegative ?? true);
 
       if (timer.targetDuration) {
         setTargetHours(Math.floor(timer.targetDuration / 3600).toString());

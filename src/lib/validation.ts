@@ -73,7 +73,7 @@ export function isValidTimerModel(obj: unknown): obj is TimerModel {
     typeof o.name === 'string' &&
     (o.type === 'countdown' || o.type === 'countup') &&
     typeof o.initialDuration === 'number' &&
-    typeof o.allowNegative === 'boolean' &&
+    (o.allowNegative === undefined || typeof o.allowNegative === 'boolean') &&
     typeof o.status === 'string' &&
     typeof o.accumulatedElapsed === 'number' &&
     typeof o.timeAdjustment === 'number' &&

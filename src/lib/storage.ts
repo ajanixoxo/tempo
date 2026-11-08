@@ -143,12 +143,28 @@ export function loadStoredTimers(): { timers: TimerModel[]; activeTimerId: strin
       return { timers: INITIAL_PRESET_TIMERS, activeTimerId: INITIAL_PRESET_TIMERS[0].id };
     }
 
-    const resolvedActiveId =
-      activeId && validTimers.some((t) => t.id === activeId)
-        ? activeId
-        : validTimers[0].id;
+    // Ensure all countdown timers allow negative/overtime by default,
+    // and if a timer was stuck in 'completed' status, recover it to ready/paused so it can run
+    const migratedTimers = validTimers.map((timer) => {
+      if (timer.type === 'countdown') {
+        const isCompleted = timer.status === 'completed';
+        return {
+          ...timer,
+          allowNegative: true,
+          status: isCompleted ? (timer.accumulatedElapsed > 0 ? 'paused' : 'idle') : timer.status,
+        };
+      }
+      return timer;
+    });
 
-    return { timers: validTimers, activeTimerId: resolvedActiveId };
+    const resolvedActiveId =
+      activeId && migratedTimers.some((t) => t.id === activeId)
+        ? activeId
+        : migratedTimers[0].id;
+
+    saveStoredTimers(migratedTimers, resolvedActiveId);
+
+    return { timers: migratedTimers, activeTimerId: resolvedActiveId };
   } catch (error) {
     console.error('Failed to load timers from LocalStorage:', error);
     return { timers: INITIAL_PRESET_TIMERS, activeTimerId: INITIAL_PRESET_TIMERS[0].id };
