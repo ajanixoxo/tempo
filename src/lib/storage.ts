@@ -17,9 +17,9 @@ export const DEFAULT_DISPLAY_SETTINGS: DisplaySettings = {
   mode: 'timer-only',
   appearance: {
     bgColor: '#080809',
-    timerColor: '#F4F4F5',
+    timerColor: '#FFFFFF',
     messageColor: '#E4E4E7',
-    accentColor: '#F4F4F5',
+    accentColor: '#FFFFFF',
     fontSize: 'large',
     fontFamily: 'mono',
     fontWeight: 'bold',

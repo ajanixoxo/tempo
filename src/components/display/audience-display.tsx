@@ -212,15 +212,15 @@ export const AudienceDisplay: React.FC = () => {
         !showControlsOverlay ? 'cursor-none' : ''
       }`}
     >
-      {/* Top Header Bar */}
-      <header className="w-full flex items-center justify-between p-6 sm:p-10 z-20">
-        <div className="flex items-center gap-3">
+      {/* Top Header Bar (Floating overlay so hero digits occupy optical screen center) */}
+      <header className="absolute top-0 left-0 right-0 flex items-center justify-between p-4 sm:p-6 z-20 pointer-events-none">
+        <div className="flex items-center gap-3 pointer-events-auto">
           {shouldShowClockCorner && <ClockDisplay settings={settings.clock} />}
         </div>
 
         {/* Minimal Controls Overlay (Fades out when inactive) */}
         <div
-          className={`flex items-center gap-2 transition-opacity duration-300 ${
+          className={`flex items-center gap-2 transition-opacity duration-300 pointer-events-auto ${
             showControlsOverlay ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
         >
@@ -259,8 +259,8 @@ export const AudienceDisplay: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="my-auto w-full flex flex-col items-center justify-center z-10 overflow-hidden">
+      {/* Main Content - Takes full viewport center */}
+      <main className="flex-1 w-full flex flex-col items-center justify-center z-10 overflow-hidden px-2 sm:px-4">
         {isClockOnly ? (
           <ClockDisplay
             settings={settings.clock}

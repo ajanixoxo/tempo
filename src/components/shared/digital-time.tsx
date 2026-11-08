@@ -69,12 +69,22 @@ export const DigitalTime: React.FC<DigitalTimeProps> = ({
     computedStyle.lineHeight = '0.95';
     computedStyle.whiteSpace = 'nowrap';
   } else if (size === 'hero') {
-    // Dynamic viewport-relative size that multiplies with user scale
-    // At 100%, base is 18vw; at 150% it is 27vw; at 200% it is 36vw, etc.
+    // Dynamic viewport-relative size calibrated to fill ~88-90% of screen width by default (matching Stagetimer display)
     const multiplier = Math.max(0.3, scale / 100);
-    const vwSize = (18 * multiplier).toFixed(2);
-    computedStyle.fontSize = `clamp(3rem, ${vwSize}vw, 70vh)`;
-    computedStyle.lineHeight = '0.95';
+    const len = formattedTime.length;
+    let baseVw = 28;
+    if (len <= 5) {
+      baseVw = 28; // e.g. "10:00" -> 28vw fills ~88-90% of screen width
+    } else if (len === 6) {
+      baseVw = 24.5; // e.g. "+00:20"
+    } else if (len <= 8) {
+      baseVw = 18.5; // e.g. "01:00:00"
+    } else {
+      baseVw = 16; // e.g. "+01:00:20"
+    }
+    const vwSize = (baseVw * multiplier).toFixed(2);
+    computedStyle.fontSize = `clamp(4rem, ${vwSize}vw, 75vh)`;
+    computedStyle.lineHeight = '0.92';
     computedStyle.whiteSpace = 'nowrap';
   }
 

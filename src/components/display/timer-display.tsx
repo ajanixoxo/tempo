@@ -57,7 +57,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
     <div className="flex flex-col items-center justify-center text-center w-full max-w-none px-4 sm:px-8 select-none">
       {/* Session Title (when enabled and mode shows title) */}
       {visibility.showTitle && title && (
-        <h2 className="text-xl sm:text-3xl md:text-5xl font-normal tracking-tight text-zinc-400 mb-4 sm:mb-8 max-w-5xl truncate px-4">
+        <h2 className="text-sm sm:text-lg md:text-2xl font-medium tracking-wider text-sky-400 uppercase mb-2 sm:mb-4 max-w-5xl truncate px-4">
           {title}
         </h2>
       )}

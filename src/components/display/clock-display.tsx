@@ -68,10 +68,16 @@ export const ClockDisplay: React.FC<ClockDisplayProps> = ({
 
   if (size === 'hero') {
     const multiplier = Math.max(0.3, scale / 100);
-    const vwSize = (18 * multiplier).toFixed(2);
+    const len = time.length;
+    let baseVw = 28;
+    if (len <= 5) baseVw = 28;
+    else if (len <= 6) baseVw = 24.5;
+    else if (len <= 8) baseVw = 18.5;
+    else baseVw = 16;
+    const vwSize = (baseVw * multiplier).toFixed(2);
     const heroStyle: React.CSSProperties = {
-      fontSize: `clamp(3rem, ${vwSize}vw, 70vh)`,
-      lineHeight: '0.95',
+      fontSize: `clamp(4rem, ${vwSize}vw, 75vh)`,
+      lineHeight: '0.92',
       whiteSpace: 'nowrap',
     };
 
