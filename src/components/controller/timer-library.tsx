@@ -31,7 +31,7 @@ export const TimerLibrary: React.FC<TimerLibraryProps> = ({
   });
 
   return (
-    <div className="flex flex-col h-full bg-tempo-panel border-r border-tempo-hairline w-72 lg:w-80 flex-shrink-0">
+    <div className="flex flex-col h-full bg-tempo-panel border-r border-tempo-hairline w-64 lg:w-72 flex-shrink-0 min-h-0 overflow-hidden">
       {/* Header */}
       <div className="p-4 border-b border-tempo-hairline space-y-3">
         <div className="flex items-center justify-between">

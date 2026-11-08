@@ -81,7 +81,7 @@ export const TimerWorkspace: React.FC<TimerWorkspaceProps> = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col justify-between p-8 sm:p-12 overflow-y-auto bg-tempo-bg select-none">
+    <div className="flex-1 min-w-0 flex flex-col justify-between p-6 sm:p-10 md:p-12 overflow-y-auto bg-tempo-bg select-none">
       {/* Session Title Header */}
       <div className="flex items-baseline justify-between border-b border-tempo-hairline pb-4">
         <div className="flex items-baseline gap-3">

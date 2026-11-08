@@ -10,11 +10,11 @@ interface MessageEditorProps {
 }
 
 const PRESET_MESSAGES = [
-  'Please return to your seats.',
-  'Next session begins shortly.',
-  'Refreshments will be served outside.',
-  'Q&A will begin in 2 minutes.',
-  'Please silence mobile devices.',
+  { label: 'Return to Seats', text: 'Please return to your seats.' },
+  { label: 'Next Session', text: 'The next session begins shortly.' },
+  { label: 'Refreshments', text: 'Refreshments will be served outside.' },
+  { label: 'Q&A in 2m', text: 'Q&A will begin in 2 minutes.' },
+  { label: 'Silence Phones', text: 'Please silence mobile devices.' },
 ];
 
 export const MessageEditor: React.FC<MessageEditorProps> = ({
@@ -37,7 +37,7 @@ export const MessageEditor: React.FC<MessageEditorProps> = ({
   };
 
   return (
-    <div className="space-y-3 pt-4 border-t border-tempo-hairline">
+    <div className="space-y-3 pt-3 border-t border-tempo-hairline">
       <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400">
         <span className="uppercase tracking-widest">Stage Message</span>
         {message && (
@@ -51,12 +51,12 @@ export const MessageEditor: React.FC<MessageEditorProps> = ({
       <div className="flex flex-wrap gap-1">
         {PRESET_MESSAGES.map((preset) => (
           <button
-            key={preset}
+            key={preset.label}
             type="button"
-            onClick={() => setInputText(preset)}
-            className="px-2 py-1 rounded bg-tempo-surface hover:bg-tempo-hover text-[11px] text-zinc-400 hover:text-zinc-200 transition-colors"
+            onClick={() => setInputText(preset.text)}
+            className="px-2 py-0.5 rounded bg-tempo-surface hover:bg-tempo-hover text-[10px] text-zinc-400 hover:text-zinc-200 transition-colors"
           >
-            {preset}
+            {preset.label}
           </button>
         ))}
       </div>

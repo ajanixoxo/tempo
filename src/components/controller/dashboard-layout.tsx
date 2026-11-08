@@ -153,7 +153,7 @@ export const DashboardLayout: React.FC = () => {
   const { time: timeStr, period } = formatRealWorldClock(currentTime, '12h', true);
 
   return (
-    <div className="min-h-screen flex flex-col bg-tempo-bg text-zinc-100 select-none">
+    <div className="h-screen max-h-screen w-screen max-w-full overflow-hidden flex flex-col bg-tempo-bg text-zinc-100 select-none">
       {/* Top Controller Header */}
       <header className="h-14 px-6 border-b border-tempo-hairline bg-tempo-panel flex items-center justify-between flex-shrink-0 z-30">
         <div className="flex items-center gap-4">
@@ -204,7 +204,7 @@ export const DashboardLayout: React.FC = () => {
       </header>
 
       {/* Main 3-Column Dashboard Body */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 min-h-0 min-w-0 flex overflow-hidden">
         {/* Left Sidebar: Timers Library */}
         <TimerLibrary
           timers={timers}
@@ -217,7 +217,7 @@ export const DashboardLayout: React.FC = () => {
         />
 
         {/* Center: Main Timer Workspace */}
-        <div className="flex-1 flex flex-col overflow-y-auto">
+        <div className="flex-1 min-w-0 min-h-0 flex flex-col overflow-y-auto">
           <TimerWorkspace
             timer={activeTimer}
             onStart={startActiveTimer}
@@ -236,7 +236,7 @@ export const DashboardLayout: React.FC = () => {
         </div>
 
         {/* Right Sidebar: Display Settings & Messages */}
-        <div className="w-80 xl:w-88 bg-tempo-panel border-l border-tempo-hairline flex flex-col h-full overflow-y-auto overflow-x-hidden p-4 space-y-4 flex-shrink-0">
+        <div className="w-80 lg:w-84 xl:w-88 bg-tempo-panel border-l border-tempo-hairline flex flex-col h-full overflow-y-auto overflow-x-hidden p-4 space-y-4 flex-shrink-0">
           <DisplaySettingsPanel
             settings={settings}
             onUpdateSettings={updateSettings}
