@@ -22,6 +22,7 @@ export const DEFAULT_DISPLAY_SETTINGS: DisplaySettings = {
     accentColor: '#F4F4F5',
     fontSize: 'large',
     fontFamily: 'mono',
+    timerScale: 100,
   },
   visibility: {
     showTitle: true,
@@ -46,7 +47,7 @@ export const INITIAL_PRESET_TIMERS: TimerModel[] = [
     description: 'Welcome attendees and opening remarks',
     type: 'countdown',
     initialDuration: 600, // 10 minutes
-    allowNegative: false,
+    allowNegative: true,
     status: 'idle',
     startedAt: null,
     accumulatedElapsed: 0,
@@ -61,7 +62,7 @@ export const INITIAL_PRESET_TIMERS: TimerModel[] = [
     description: 'Main keynote address',
     type: 'countdown',
     initialDuration: 1800, // 30 minutes
-    allowNegative: false,
+    allowNegative: true,
     status: 'idle',
     startedAt: null,
     accumulatedElapsed: 0,
@@ -177,7 +178,14 @@ export function loadStoredDisplaySettings(): DisplaySettings {
     return {
       ...DEFAULT_DISPLAY_SETTINGS,
       ...parsed,
-      appearance: { ...DEFAULT_DISPLAY_SETTINGS.appearance, ...(parsed.appearance || {}) },
+      appearance: {
+        ...DEFAULT_DISPLAY_SETTINGS.appearance,
+        ...(parsed.appearance || {}),
+        timerScale:
+          typeof parsed.appearance?.timerScale === 'number' && parsed.appearance.timerScale > 0
+            ? parsed.appearance.timerScale
+            : DEFAULT_DISPLAY_SETTINGS.appearance.timerScale,
+      },
       visibility: { ...DEFAULT_DISPLAY_SETTINGS.visibility, ...(parsed.visibility || {}) },
       warnings: { ...DEFAULT_DISPLAY_SETTINGS.warnings, ...(parsed.warnings || {}) },
       clock: { ...DEFAULT_DISPLAY_SETTINGS.clock, ...(parsed.clock || {}) },

@@ -23,16 +23,17 @@ export interface TimerCalculatedState {
   currentSeconds: number; // remaining seconds for countdown, elapsed seconds for count-up
   rawSeconds: number; // exact floating point before rounding
   progress: number; // 0 to 1 (or 0 to 1+ for over-target)
-  isNegative: boolean; // true if countdown is past 0 into negative
+  isNegative: boolean; // true if countdown is past 0 into negative/overtime
   isWarning: boolean; // true if within warning threshold
   isUrgent: boolean; // true if within urgent threshold
   isCompleted: boolean;
   isOverTarget: boolean; // true for count-up past target
-  formattedTime: string; // "MM:SS" or "HH:MM:SS"
+  overtimeSeconds: number; // additional seconds used past 0 in overtime
+  formattedTime: string; // "+MM:SS" (in overtime) or "MM:SS" or "HH:MM:SS"
   hours: number;
   minutes: number;
   seconds: number;
-  sign: '' | '-';
+  sign: '' | '-' | '+';
 }
 
 export interface CreateTimerInput {

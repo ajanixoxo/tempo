@@ -11,6 +11,7 @@ import {
   loadStoredDisplaySettings,
   loadStoredMessage,
   loadStoredTimers,
+  saveStoredDisplaySettings,
 } from '@/lib/storage';
 import { Maximize, Minimize } from 'lucide-react';
 
@@ -20,7 +21,6 @@ export const AudienceDisplay: React.FC = () => {
   const [message, setMessage] = useState<AudienceMessage | null>(null);
   const [renderTimestamp, setRenderTimestamp] = useState<number>(Date.now());
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
   const [showControlsOverlay, setShowControlsOverlay] = useState(true);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -41,8 +41,6 @@ export const AudienceDisplay: React.FC = () => {
   // BroadcastChannel communication subscription
   useEffect(() => {
     const unsubscribe = broadcastBus.subscribe((payload) => {
-      setIsConnected(true);
-
       switch (payload.type) {
         case 'TIMER_STATE_UPDATED':
           setActiveTimer(payload.timer);
@@ -111,7 +109,32 @@ export const AudienceDisplay: React.FC = () => {
     }
   }, []);
 
-  // Fullscreen change listener & keyboard shortcut 'F'
+  // Font size adjustment handler
+  const updateTimerScale = useCallback((delta: number | 'reset') => {
+    setSettings((prev) => {
+      const currentScale = prev.appearance.timerScale ?? 100;
+      let newScale = 100;
+      if (delta === 'reset') {
+        newScale = 100;
+      } else {
+        newScale = Math.max(40, Math.min(450, currentScale + delta));
+      }
+
+      const updated: DisplaySettings = {
+        ...prev,
+        appearance: {
+          ...prev.appearance,
+          timerScale: newScale,
+        },
+      };
+
+      saveStoredDisplaySettings(updated);
+      broadcastBus.publish({ type: 'DISPLAY_SETTINGS_UPDATED', settings: updated });
+      return updated;
+    });
+  }, []);
+
+  // Fullscreen change listener & keyboard shortcuts (+, -, 0, F)
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(Boolean(document.fullscreenElement));
@@ -120,6 +143,12 @@ export const AudienceDisplay: React.FC = () => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'f' || e.key === 'F') {
         toggleFullscreen();
+      } else if (e.key === '+' || e.key === '=') {
+        updateTimerScale(15);
+      } else if (e.key === '-' || e.key === '_') {
+        updateTimerScale(-15);
+      } else if (e.key === '0') {
+        updateTimerScale('reset');
       }
     };
 
@@ -130,7 +159,7 @@ export const AudienceDisplay: React.FC = () => {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [toggleFullscreen]);
+  }, [toggleFullscreen, updateTimerScale]);
 
   // Hide cursor and controls after 3 seconds of mouse inactivity
   const handleMouseMove = () => {
@@ -152,6 +181,7 @@ export const AudienceDisplay: React.FC = () => {
         isUrgent: false,
         isCompleted: false,
         isOverTarget: false,
+        overtimeSeconds: 0,
         formattedTime: '00:00',
         hours: 0,
         minutes: 0,
@@ -171,11 +201,13 @@ export const AudienceDisplay: React.FC = () => {
     (mode === 'custom' && settings.visibility.showMessage) ||
     (message && message.variant === 'overlay');
 
+  const currentScale = settings.appearance.timerScale ?? 100;
+
   return (
     <div
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      style={{ backgroundColor: settings.appearance.bgColor || '#000000' }}
+      style={{ backgroundColor: settings.appearance.bgColor || '#080809' }}
       className={`relative min-h-screen w-screen flex flex-col justify-between overflow-hidden transition-colors duration-500 ${
         !showControlsOverlay ? 'cursor-none' : ''
       }`}
@@ -188,10 +220,35 @@ export const AudienceDisplay: React.FC = () => {
 
         {/* Minimal Controls Overlay (Fades out when inactive) */}
         <div
-          className={`flex items-center gap-3 transition-opacity duration-300 ${
+          className={`flex items-center gap-2 transition-opacity duration-300 ${
             showControlsOverlay ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
         >
+          {/* Quick Font Size Controls on Stage Display */}
+          <div className="flex items-center gap-1 bg-zinc-900/60 rounded-md p-1 font-mono text-xs text-zinc-400">
+            <button
+              onClick={() => updateTimerScale(-15)}
+              className="px-2 py-1 rounded hover:bg-zinc-800 hover:text-white transition-colors"
+              title="Decrease Font Size (-)"
+            >
+              A-
+            </button>
+            <button
+              onClick={() => updateTimerScale('reset')}
+              className="px-1.5 py-1 rounded hover:bg-zinc-800 text-[11px] text-zinc-300 hover:text-white"
+              title="Reset Font Size to 100% (0)"
+            >
+              {currentScale}%
+            </button>
+            <button
+              onClick={() => updateTimerScale(15)}
+              className="px-2 py-1 rounded hover:bg-zinc-800 hover:text-white transition-colors"
+              title="Increase Font Size (+)"
+            >
+              A+
+            </button>
+          </div>
+
           <button
             onClick={toggleFullscreen}
             className="p-2 rounded-md bg-zinc-900/60 hover:bg-zinc-850 text-zinc-400 hover:text-white transition-colors"
@@ -203,9 +260,9 @@ export const AudienceDisplay: React.FC = () => {
       </header>
 
       {/* Main Content */}
-      <main className="my-auto w-full flex flex-col items-center justify-center z-10">
+      <main className="my-auto w-full flex flex-col items-center justify-center z-10 overflow-hidden">
         {isClockOnly ? (
-          <ClockDisplay settings={settings.clock} size="hero" />
+          <ClockDisplay settings={settings.clock} size="hero" scale={currentScale} />
         ) : (
           <TimerDisplay
             calculated={calculated}

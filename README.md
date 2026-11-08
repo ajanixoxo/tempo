@@ -32,7 +32,9 @@ It features dual-screen operation over HDMI: a comprehensive **Controller Dashbo
      - **Clock Only** (Real-world local clock)
      - **Timer & Clock**
      - **Custom** (Operator selects visible elements)
+   - **Customizable Font Sizing to Any Size:** Real-time font scaling slider, direct percentage input, and presets (`100%`, `140%`, `180%`, `220%`, `280%`).
    - One-key fullscreen toggle (`F`).
+   - Stage Display Font Shortcuts: `+` / `-` to scale font size up/down, `0` to reset.
    - Auto-hides mouse cursor on external displays during presentations.
 
 6. **Stage Messaging System:**

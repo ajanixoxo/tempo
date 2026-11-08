@@ -58,7 +58,7 @@ export function validateTimerInput(input: CreateTimerInput): ValidationResult<{
           description: input.description?.trim() || undefined,
           type: input.type,
           initialDuration: input.type === 'countdown' ? totalDuration : 0,
-          allowNegative: Boolean(input.allowNegative),
+          allowNegative: input.allowNegative !== undefined ? Boolean(input.allowNegative) : true,
           targetDuration,
         }
       : undefined,

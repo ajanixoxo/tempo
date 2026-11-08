@@ -43,6 +43,7 @@ export interface DisplayAppearanceSettings {
   accentColor: string;
   fontSize: DisplayFontSize;
   fontFamily: DisplayFontFamily;
+  timerScale: number; // Scale percentage for stage display font (default 100%, can be set to any size e.g. 50% to 400%)
 }
 
 export interface DisplayVisibilitySettings {

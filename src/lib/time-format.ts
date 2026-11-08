@@ -5,15 +5,19 @@ export interface FormattedTimeParts {
   minutes: number;
   seconds: number;
   formatted: string;
-  sign: '' | '-';
+  sign: '' | '-' | '+';
   hasHours: boolean;
 }
 
 /**
  * Format raw seconds (can be positive, zero, or negative) into display components.
- * Countdown past zero or count-up displays cleanly.
+ * When negative (in overtime), counts up additional time with a '+' prefix (Stagetimer style).
  */
-export function formatSecondsToTime(totalSeconds: number, forceHours = false): FormattedTimeParts {
+export function formatSecondsToTime(
+  totalSeconds: number,
+  forceHours = false,
+  overtimeSign: '+' | '-' = '+'
+): FormattedTimeParts {
   const isNegative = totalSeconds < 0;
   const absSeconds = Math.abs(Math.floor(totalSeconds));
 
@@ -23,7 +27,7 @@ export function formatSecondsToTime(totalSeconds: number, forceHours = false): F
 
   const pad = (num: number): string => num.toString().padStart(2, '0');
 
-  const sign = isNegative ? '-' : '';
+  const sign: '' | '-' | '+' = isNegative ? overtimeSign : '';
   const hasHours = hours > 0 || forceHours;
 
   const formatted = hasHours
@@ -35,7 +39,7 @@ export function formatSecondsToTime(totalSeconds: number, forceHours = false): F
     minutes,
     seconds,
     formatted,
-    sign: isNegative ? '-' : '',
+    sign,
     hasHours,
   };
 }

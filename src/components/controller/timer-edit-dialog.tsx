@@ -197,7 +197,7 @@ export const TimerEditDialog: React.FC<TimerEditDialogProps> = ({
                   onChange={(e) => setAllowNegative(e.target.checked)}
                   className="rounded bg-tempo-surface border-0 text-zinc-200 focus:ring-0"
                 />
-                <span className="text-xs text-zinc-400">Allow negative overtime</span>
+                <span className="text-xs text-zinc-300">Count up additional time when zero is reached (Overtime)</span>
               </label>
             </div>
           )}

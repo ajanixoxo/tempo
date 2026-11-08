@@ -19,7 +19,7 @@ export const TimerCreationDialog: React.FC<TimerCreationDialogProps> = ({
   const [hours, setHours] = useState('0');
   const [minutes, setMinutes] = useState('15');
   const [seconds, setSeconds] = useState('0');
-  const [allowNegative, setAllowNegative] = useState(false);
+  const [allowNegative, setAllowNegative] = useState(true);
 
   const [targetHours, setTargetHours] = useState('0');
   const [targetMinutes, setTargetMinutes] = useState('30');
@@ -57,7 +57,7 @@ export const TimerCreationDialog: React.FC<TimerCreationDialogProps> = ({
       setHours('0');
       setMinutes('15');
       setSeconds('0');
-      setAllowNegative(false);
+      setAllowNegative(true);
     }
   };
 
@@ -182,7 +182,7 @@ export const TimerCreationDialog: React.FC<TimerCreationDialogProps> = ({
                   onChange={(e) => setAllowNegative(e.target.checked)}
                   className="rounded bg-tempo-surface border-0 text-zinc-200 focus:ring-0"
                 />
-                <span className="text-xs text-zinc-400">Allow overtime (negative time past zero)</span>
+                <span className="text-xs text-zinc-300">Count up additional time when zero is reached (Overtime)</span>
               </label>
             </div>
           )}

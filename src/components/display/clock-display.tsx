@@ -5,9 +5,10 @@ import { formatRealWorldClock } from '@/lib/time-format';
 interface ClockDisplayProps {
   settings: ClockSettings;
   size?: 'normal' | 'hero';
+  scale?: number;
 }
 
-export const ClockDisplay: React.FC<ClockDisplayProps> = ({ settings, size = 'normal' }) => {
+export const ClockDisplay: React.FC<ClockDisplayProps> = ({ settings, size = 'normal', scale = 100 }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
   useEffect(() => {
@@ -26,19 +27,30 @@ export const ClockDisplay: React.FC<ClockDisplayProps> = ({ settings, size = 'no
   );
 
   if (size === 'hero') {
+    const multiplier = Math.max(0.3, scale / 100);
+    const vwSize = (18 * multiplier).toFixed(2);
+    const heroStyle: React.CSSProperties = {
+      fontSize: `clamp(3rem, ${vwSize}vw, 70vh)`,
+      lineHeight: '0.95',
+      whiteSpace: 'nowrap',
+    };
+
     return (
-      <div className="flex flex-col items-center justify-center text-center p-6 select-none">
+      <div className="flex flex-col items-center justify-center text-center p-6 select-none w-full max-w-none">
         {dateStr && (
           <div className="text-lg sm:text-xl font-normal text-zinc-500 mb-4 tracking-widest uppercase font-mono">
             {dateStr}
           </div>
         )}
-        <div className="flex items-baseline justify-center gap-4">
-          <span className="font-mono text-[14vw] sm:text-[16vw] font-light tracking-tighter text-zinc-100 tabular-nums leading-none">
+        <div className="flex items-baseline justify-center gap-4 overflow-hidden w-full">
+          <span
+            style={heroStyle}
+            className="font-mono font-light tracking-tighter text-zinc-100 tabular-nums inline-block"
+          >
             {time}
           </span>
           {period && (
-            <span className="text-2xl sm:text-4xl font-normal text-zinc-500 uppercase font-mono">
+            <span className="text-2xl sm:text-5xl font-normal text-zinc-500 uppercase font-mono">
               {period}
             </span>
           )}

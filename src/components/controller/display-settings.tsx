@@ -263,9 +263,93 @@ export const DisplaySettingsPanel: React.FC<DisplaySettingsProps> = ({
 
       {/* Tab: Appearance */}
       {activeTab === 'appearance' && (
-        <div className="space-y-3 text-xs text-zinc-300">
-          <div>
-            <span className="text-[11px] text-zinc-500 block mb-1">Typography:</span>
+        <div className="space-y-4 text-xs text-zinc-300">
+          {/* Stage Display Font Size */}
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] text-zinc-400 font-mono uppercase tracking-wider">
+                Stage Font Size
+              </span>
+              <div className="flex items-center gap-1">
+                <input
+                  type="number"
+                  min="40"
+                  max="450"
+                  step="5"
+                  value={settings.appearance.timerScale ?? 100}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value) || 100;
+                    onUpdateSettings({
+                      appearance: {
+                        ...settings.appearance,
+                        timerScale: Math.max(30, Math.min(500, val)),
+                      },
+                    });
+                  }}
+                  className="w-16 bg-tempo-surface rounded px-2 py-0.5 text-right font-mono text-xs text-white focus:outline-none"
+                />
+                <span className="text-[11px] font-mono text-zinc-500">%</span>
+              </div>
+            </div>
+
+            {/* Slider */}
+            <input
+              type="range"
+              min="50"
+              max="350"
+              step="5"
+              value={settings.appearance.timerScale ?? 100}
+              onChange={(e) => {
+                const val = parseInt(e.target.value) || 100;
+                onUpdateSettings({
+                  appearance: {
+                    ...settings.appearance,
+                    timerScale: val,
+                  },
+                });
+              }}
+              className="w-full h-1 bg-tempo-surface rounded appearance-none cursor-pointer accent-white"
+            />
+
+            {/* Quick Presets */}
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              {[
+                { label: 'Normal (100%)', scale: 100 },
+                { label: 'Large (140%)', scale: 140 },
+                { label: 'X-Large (180%)', scale: 180 },
+                { label: 'Huge (220%)', scale: 220 },
+                { label: 'Max Fill (280%)', scale: 280 },
+              ].map((p) => (
+                <button
+                  key={p.scale}
+                  type="button"
+                  onClick={() =>
+                    onUpdateSettings({
+                      appearance: {
+                        ...settings.appearance,
+                        timerScale: p.scale,
+                      },
+                    })
+                  }
+                  className={`px-2 py-1 rounded text-[11px] font-mono transition-colors ${
+                    (settings.appearance.timerScale ?? 100) === p.scale
+                      ? 'bg-zinc-100 text-zinc-950 font-semibold'
+                      : 'bg-tempo-surface hover:bg-tempo-hover text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+            <p className="text-[10px] text-zinc-500 font-mono">
+              Adjust size live. You can also press + / - directly on the stage screen.
+            </p>
+          </div>
+
+          <div className="pt-2 border-t border-tempo-hairline">
+            <span className="text-[11px] text-zinc-400 font-mono uppercase tracking-wider block mb-1.5">
+              Typography
+            </span>
             <select
               value={settings.appearance.fontFamily}
               onChange={(e) =>
@@ -276,7 +360,7 @@ export const DisplaySettingsPanel: React.FC<DisplaySettingsProps> = ({
                   },
                 })
               }
-              className="w-full bg-tempo-surface rounded px-2 py-1.5 text-xs text-white focus:outline-none"
+              className="w-full bg-tempo-surface rounded px-2.5 py-1.5 text-xs text-white focus:outline-none"
             >
               <option value="mono">Monospace (Instrumental)</option>
               <option value="sans">Sans-serif (Modern)</option>

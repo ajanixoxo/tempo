@@ -62,7 +62,8 @@ export const TimerWorkspace: React.FC<TimerWorkspaceProps> = ({
   const getStatusText = () => {
     if (calculated.isNegative) {
       return (
-        <span className="text-red-400 font-mono text-xs">
+        <span className="text-red-400 font-mono text-xs flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
           Overtime ({calculated.formattedTime})
         </span>
       );

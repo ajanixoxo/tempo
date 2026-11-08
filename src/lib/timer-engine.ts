@@ -46,12 +46,14 @@ function calculateCountdownState(
   let currentSeconds: number;
   let isNegative = false;
   let isCompleted = timer.status === 'completed';
+  let overtimeSeconds = 0;
 
   if (rawRemaining <= 0) {
     if (timer.allowNegative) {
       currentSeconds = Math.floor(rawRemaining);
       isNegative = true;
       isCompleted = true;
+      overtimeSeconds = Math.abs(currentSeconds);
     } else {
       currentSeconds = 0;
       isCompleted = true;
@@ -78,7 +80,7 @@ function calculateCountdownState(
     ? 1
     : Math.min(1, Math.max(0, (effectiveDuration - rawRemaining) / totalForProgress));
 
-  const timeParts = formatSecondsToTime(currentSeconds, effectiveDuration >= 3600);
+  const timeParts = formatSecondsToTime(currentSeconds, effectiveDuration >= 3600, '+');
 
   return {
     currentSeconds,
@@ -89,6 +91,7 @@ function calculateCountdownState(
     isUrgent,
     isCompleted,
     isOverTarget: false,
+    overtimeSeconds,
     formattedTime: timeParts.formatted,
     hours: timeParts.hours,
     minutes: timeParts.minutes,
@@ -136,6 +139,7 @@ function calculateCountupState(
     isUrgent: false,
     isCompleted: timer.status === 'completed',
     isOverTarget,
+    overtimeSeconds: isOverTarget && timer.targetDuration ? Math.max(0, currentSeconds - timer.targetDuration) : 0,
     formattedTime: timeParts.formatted,
     hours: timeParts.hours,
     minutes: timeParts.minutes,

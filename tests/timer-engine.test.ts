@@ -186,7 +186,8 @@ describe('Timer Engine: Zero Handling & Negative Overtime', () => {
     const state = calculateTimerState(timer, t0 + 15000);
     expect(state.isNegative).toBe(true);
     expect(state.currentSeconds).toBe(-5);
-    expect(state.formattedTime).toBe('-00:05');
+    expect(state.overtimeSeconds).toBe(5);
+    expect(state.formattedTime).toBe('+00:05');
   });
 });
 

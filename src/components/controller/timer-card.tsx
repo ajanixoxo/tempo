@@ -28,6 +28,22 @@ export const TimerCard: React.FC<TimerCardProps> = ({
       : 'Count-up';
 
   const getStatusLabel = () => {
+    const currentElapsed =
+      timer.accumulatedElapsed +
+      (timer.status === 'running' && timer.startedAt ? (Date.now() - timer.startedAt) / 1000 : 0);
+    const isOvertime =
+      timer.type === 'countdown' &&
+      timer.allowNegative &&
+      timer.initialDuration + timer.timeAdjustment - currentElapsed < 0;
+
+    if (isOvertime) {
+      return (
+        <span className="text-red-400 font-mono text-[11px]">
+          {timer.status === 'running' ? 'overtime' : 'overtime (paused)'}
+        </span>
+      );
+    }
+
     switch (timer.status) {
       case 'running':
         return <span className="text-emerald-400 font-mono text-[11px]">running</span>;
