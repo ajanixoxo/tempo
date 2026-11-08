@@ -24,6 +24,7 @@ export const DEFAULT_DISPLAY_SETTINGS: DisplaySettings = {
     fontFamily: 'mono',
     fontWeight: 'bold',
     timerScale: 100,
+    animationMode: 'fluid',
   },
   visibility: {
     showTitle: true,
@@ -183,6 +184,7 @@ export function loadStoredDisplaySettings(): DisplaySettings {
         ...DEFAULT_DISPLAY_SETTINGS.appearance,
         ...(parsed.appearance || {}),
         fontWeight: parsed.appearance?.fontWeight || 'bold',
+        animationMode: parsed.appearance?.animationMode || 'fluid',
         timerScale:
           typeof parsed.appearance?.timerScale === 'number' && parsed.appearance.timerScale > 0
             ? parsed.appearance.timerScale

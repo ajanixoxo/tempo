@@ -135,6 +135,7 @@ describe('Persistence: LocalStorage Module', () => {
         timerScale: 250, // 250% scale
         fontFamily: 'impact',
         fontWeight: 'black',
+        animationMode: 'kinetic',
       },
     };
 
@@ -143,6 +144,7 @@ describe('Persistence: LocalStorage Module', () => {
     expect(loaded.appearance.timerScale).toBe(250);
     expect(loaded.appearance.fontFamily).toBe('impact');
     expect(loaded.appearance.fontWeight).toBe('black');
+    expect(loaded.appearance.animationMode).toBe('kinetic');
   });
 
   it('saves and loads audience messages faithfully', () => {

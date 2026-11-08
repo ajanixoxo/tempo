@@ -108,6 +108,7 @@ export const TimerWorkspace: React.FC<TimerWorkspaceProps> = ({
             formattedTime={calculated.formattedTime}
             size="2xl"
             weight="bold"
+            animationMode="fluid"
             variant={getVisualVariant()}
             isFlashing={calculated.isUrgent && warnings.flashOnUrgent}
           />
@@ -122,13 +123,13 @@ export const TimerWorkspace: React.FC<TimerWorkspaceProps> = ({
             </div>
             <div className="h-3 w-full bg-tempo-surface rounded-full overflow-hidden">
               <div
-                className={`h-full transition-all duration-300 ease-out ${
+                className={`h-full transition-[width] duration-1000 ease-linear ${
                   calculated.isUrgent
                     ? 'bg-red-500'
                     : calculated.isWarning || calculated.isOverTarget
                     ? 'bg-amber-400'
                     : 'bg-zinc-200'
-                } ${calculated.isNegative ? 'bg-red-500 animate-pulse' : ''}`}
+                } ${calculated.isNegative ? 'bg-red-500 animate-overtime-beacon' : ''}`}
                 style={{
                   width: calculated.isNegative
                     ? '100%'

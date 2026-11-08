@@ -290,13 +290,17 @@ export const AudienceDisplay: React.FC = () => {
       {settings.visibility.showProgress && !isClockOnly && activeTimer && (
         <div className="w-full h-4 sm:h-5 bg-zinc-900/90 overflow-hidden z-30 fixed bottom-0 left-0 right-0">
           <div
-            className={`h-full transition-all duration-300 ease-out ${
+            className={`h-full ${
+              settings.appearance.animationMode === 'instant'
+                ? 'transition-none'
+                : 'transition-[width] duration-1000 ease-linear'
+            } ${
               calculated.isUrgent
                 ? 'bg-red-500'
                 : calculated.isWarning || calculated.isOverTarget
                 ? 'bg-amber-400'
                 : 'bg-zinc-200'
-            } ${calculated.isNegative ? 'bg-red-500 animate-pulse' : ''}`}
+            } ${calculated.isNegative ? 'bg-red-500 animate-overtime-beacon' : ''}`}
             style={{
               width: calculated.isNegative
                 ? '100%'

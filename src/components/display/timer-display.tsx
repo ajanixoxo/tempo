@@ -69,6 +69,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
           size="hero"
           scale={timerScale}
           weight={appearance.fontWeight || 'bold'}
+          animationMode={appearance.animationMode || 'fluid'}
           variant={getTimerVariant()}
           customColor={getCustomColor()}
           isFlashing={isFlashing}
@@ -78,8 +79,8 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 
       {/* Overtime or Ended Indicators */}
       {calculated.isNegative && (
-        <div className="mt-6 flex items-center justify-center gap-2 text-sm sm:text-base font-mono tracking-widest text-red-400 uppercase">
-          <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
+        <div className="mt-6 flex items-center justify-center gap-2 text-sm sm:text-base font-mono tracking-widest text-red-400 uppercase animate-overtime-beacon">
+          <span className="w-2.5 h-2.5 rounded-full bg-red-400 animate-pulse" />
           <span>Overtime ({calculated.formattedTime})</span>
         </div>
       )}

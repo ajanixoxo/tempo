@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { DisplayFontFamily, DisplayFontWeight, DisplayMode, DisplaySettings } from '@/types/display';
+import {
+  DisplayAnimationMode,
+  DisplayFontFamily,
+  DisplayFontWeight,
+  DisplayMode,
+  DisplaySettings,
+} from '@/types/display';
 import { ExternalLink, HelpCircle } from 'lucide-react';
 
 interface DisplaySettingsProps {
@@ -409,6 +415,76 @@ export const DisplaySettingsPanel: React.FC<DisplaySettingsProps> = ({
                     }`}
                   >
                     {w.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Countdown Animation Selector */}
+            <div className="pt-2 border-t border-tempo-hairline">
+              <span className="text-[11px] text-zinc-400 font-mono uppercase tracking-wider block mb-1.5">
+                Countdown Animation
+              </span>
+              <div className="space-y-1.5">
+                {[
+                  {
+                    id: 'fluid' as DisplayAnimationMode,
+                    name: 'Fluid Glide',
+                    desc: 'Smooth 60fps liquid progress bar & soft transitions',
+                  },
+                  {
+                    id: 'kinetic' as DisplayAnimationMode,
+                    name: 'Mechanical Reel (Ticker)',
+                    desc: 'Split-reel rolling digits like airport boards & sports clocks',
+                  },
+                  {
+                    id: 'morph' as DisplayAnimationMode,
+                    name: 'Blur Morph',
+                    desc: 'Soft blur-fade micro-transitions on changing digits',
+                  },
+                  {
+                    id: 'flip' as DisplayAnimationMode,
+                    name: '3D Flip Clock',
+                    desc: 'Split-flap downward perspective card flips',
+                  },
+                  {
+                    id: 'instant' as DisplayAnimationMode,
+                    name: 'Raw Instant',
+                    desc: 'Traditional broadcast zero-latency digital snap',
+                  },
+                ].map((anim) => (
+                  <button
+                    key={anim.id}
+                    type="button"
+                    onClick={() =>
+                      onUpdateSettings({
+                        appearance: {
+                          ...settings.appearance,
+                          animationMode: anim.id,
+                        },
+                      })
+                    }
+                    className={`w-full p-2 rounded-md text-left transition-colors flex items-center justify-between ${
+                      (settings.appearance.animationMode || 'fluid') === anim.id
+                        ? 'bg-zinc-200 text-zinc-950 font-medium'
+                        : 'bg-tempo-surface hover:bg-tempo-hover text-zinc-300'
+                    }`}
+                  >
+                    <div>
+                      <div className="text-xs font-medium">{anim.name}</div>
+                      <div
+                        className={`text-[10px] ${
+                          (settings.appearance.animationMode || 'fluid') === anim.id
+                            ? 'text-zinc-700'
+                            : 'text-zinc-500'
+                        }`}
+                      >
+                        {anim.desc}
+                      </div>
+                    </div>
+                    {(settings.appearance.animationMode || 'fluid') === anim.id && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-950 ml-2 flex-shrink-0" />
+                    )}
                   </button>
                 ))}
               </div>

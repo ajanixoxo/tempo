@@ -53,3 +53,68 @@ body {
 .animate-urgent-flash {
   animation: calm-pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+/* Blur-morph animation for modern digit transition (Magic UI / Linear inspired) */
+@keyframes digit-morph {
+  0% {
+    opacity: 0.25;
+    transform: translateY(-5px) scale(0.97);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+.animate-digit-morph {
+  animation: digit-morph 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 3D Split-flap perspective card flip */
+@keyframes digit-flip {
+  0% {
+    transform: perspective(600px) rotateX(70deg);
+    opacity: 0.3;
+  }
+  100% {
+    transform: perspective(600px) rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+.animate-digit-flip {
+  animation: digit-flip 0.24s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  transform-origin: center;
+}
+
+/* Subtle crossfade for fluid mode */
+@keyframes digit-fade {
+  0% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-digit-fade {
+  animation: digit-fade 0.18s ease-out forwards;
+}
+
+/* Overtime heartbeat beacon */
+@keyframes overtime-beacon {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.65;
+    transform: scale(1.04);
+  }
+}
+
+.animate-overtime-beacon {
+  animation: overtime-beacon 1.4s ease-in-out infinite;
+}
