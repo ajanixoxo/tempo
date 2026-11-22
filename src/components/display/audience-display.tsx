@@ -260,7 +260,7 @@ export const AudienceDisplay: React.FC = () => {
       </header>
 
       {/* Main Content - Takes full viewport center */}
-      <main className="flex-1 w-full flex flex-col items-center justify-center z-10 overflow-hidden px-2 sm:px-4">
+      <main className="flex-1 w-full flex flex-col items-center justify-center z-10 overflow-hidden px-2 ">
         {isClockOnly ? (
           <ClockDisplay
             settings={settings.clock}

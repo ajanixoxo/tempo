@@ -3,7 +3,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen flex flex-col justify-between p-8 sm:p-16 max-w-5xl mx-auto selection:bg-zinc-800 selection:text-white">
+    <main className="min-h-screen flex flex-col justify-between p-6 sm:p-12 max-w-6xl mx-auto selection:bg-zinc-800 selection:text-white">
       {/* Quiet Minimal Header */}
       <header className="flex items-center justify-between pb-8">
         <span className="text-sm font-mono tracking-widest uppercase text-zinc-400">
